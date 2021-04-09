@@ -22,6 +22,9 @@ public class Menu implements Serializable {
     @Type(type = "uuid-binary")
     private UUID id;
 
+    public Menu() {
+    }
+
     @ManyToMany
     private List<Item> itemList;
 

@@ -5,10 +5,11 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Item implements Serializable {
+public class Restaurant implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -20,31 +21,26 @@ public class Item implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    @Lob
-    private String image;
+    @OneToMany
+    private List<Menu> menus;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
-
-    public Item() {
-    }
-
-    public Item(String name, String description, String image, Double price) {
+    public Restaurant(String name, String address, List<Menu> menus) {
         this.name = name;
-        this.description = description;
-        this.image = image;
-        this.price = price;
+        this.address = address;
+        this.menus = menus;
     }
 
-    public Item(UUID id, String name, String description, String image, Double price) {
+    public Restaurant(UUID id, String name, String address, List<Menu> menus) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.image = image;
-        this.price = price;
+        this.address = address;
+        this.menus = menus;
+    }
+
+    public Restaurant() {
     }
 
     public static long getSerialVersionUID() {
@@ -67,19 +63,11 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
