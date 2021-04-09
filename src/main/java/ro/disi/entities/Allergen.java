@@ -4,11 +4,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Entity
 public class Allergen implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +30,9 @@ public class Allergen implements Serializable {
     public Allergen(UUID id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Allergen() {
     }
 
     public static long getSerialVersionUID() {
