@@ -26,18 +26,22 @@ public class Item implements Serializable {
     @Lob
     private String image;
 
+    @Column(name = "price", nullable = false)
+    private Double price;
 
-    public Item(UUID id, String name, String description, String image) {
+    public Item(String name, String description, String image, Double price) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+    }
+
+    public Item(UUID id, String name, String description, String image, Double price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
-    }
-
-    public Item(String name, String description, String image) {
-        this.name = name;
-        this.description = description;
-        this.image = image;
+        this.price = price;
     }
 
     public static long getSerialVersionUID() {
