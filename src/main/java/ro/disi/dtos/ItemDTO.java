@@ -1,46 +1,38 @@
-package ro.disi.entities;
+package ro.disi.dtos;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.naming.spi.DirObjectFactory;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@Entity
-public class Item implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class ItemDTO {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Type(type = "uuid-binary")
     private UUID id;
 
-    @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
-    @Column(name = "description")
+    @NotNull
     private String description;
 
-    @Column(name = "image")
-    @Lob
     private String image;
 
-    @Column(name = "price", nullable = false)
+    @NotNull
     private Double price;
 
-    public Item() {
-    }
-
-    public Item(String name, String description, String image, Double price) {
+    public ItemDTO(@NotNull String name, @NotNull String description, String image, @NotNull Double price) {
         this.name = name;
         this.description = description;
         this.image = image;
         this.price = price;
     }
 
-    public Item(UUID id, String name, String description, String image, Double price) {
+    public ItemDTO(UUID id, @NotNull String name, @NotNull String description, String image, @NotNull Double price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -48,8 +40,7 @@ public class Item implements Serializable {
         this.price = price;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public ItemDTO() {
     }
 
     public UUID getId() {
@@ -76,19 +67,19 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
