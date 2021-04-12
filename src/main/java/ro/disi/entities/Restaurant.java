@@ -3,11 +3,9 @@ package ro.disi.entities;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +20,33 @@ public class Restaurant implements Serializable {
     private String name;
     @Column(nullable = false)
     private String location;
-    //Menu Items will be added by Mihai Cucui
+
+    @OneToMany
+    private List<Menu> menus;
+
+    public Restaurant() {
+    }
+
+    public Restaurant(String name, String location, List<Menu> menus) {
+        this.name = name;
+        this.location = location;
+        this.menus = menus;
+    }
+
+    public Restaurant(UUID id, String name, String location, List<Menu> menus) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.menus = menus;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
 
     public UUID getId() {
         return id;
