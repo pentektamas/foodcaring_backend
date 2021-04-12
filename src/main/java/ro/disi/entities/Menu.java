@@ -22,6 +22,8 @@ public class Menu implements Serializable {
     @Type(type = "uuid-binary")
     private UUID id;
 
+    private String name;
+
     public Menu() {
     }
 
