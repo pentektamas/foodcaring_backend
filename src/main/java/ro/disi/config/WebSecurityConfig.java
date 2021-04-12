@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .sessionFixation().migrateSession()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/signup").permitAll()
                 .antMatchers("/personDummy").permitAll() //in order for tests (dummyPersonTests) to pass
                 //add here any routes that don't need authentication
                 .anyRequest().authenticated()

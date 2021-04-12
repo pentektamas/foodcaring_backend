@@ -17,10 +17,14 @@ public class Donor extends Person implements Serializable {
         this.hasDonated = hasDonated;
     }
 
+    public Donor(String firstName, String lastName, String location, String phoneNumber, Account account) {
+        super(firstName, lastName, location, phoneNumber, account);
+    }
+
     public Donor() {
     }
 
-    public boolean isHasDonated() {
+    public boolean getHasDonated() {
         return hasDonated;
     }
 

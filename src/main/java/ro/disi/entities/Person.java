@@ -93,4 +93,23 @@ public abstract class Person implements Serializable {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Person)) {
+            return false;
+        }
+        Person person = (Person) o;
+
+        return this.firstName.equals(person.firstName) &&
+                this.lastName.equals(person.lastName) &&
+                this.location.equals(person.location) &&
+                this.phoneNumber.equals(person.phoneNumber) &&
+                this.account.getUsername().equals(person.account.getUsername()) &&
+                this.account.getPassword().equals(person.account.getPassword()) &&
+                this.account.getRole().equals(person.account.getRole());
+    }
 }

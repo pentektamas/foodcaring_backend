@@ -17,6 +17,10 @@ public class DisadvantagedPerson extends Person implements Serializable {
         this.helped = helped;
     }
 
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account) {
+        super(firstName, lastName, location, phoneNumber, account);
+    }
+
     public DisadvantagedPerson() {
     }
 
