@@ -23,6 +23,7 @@ public class Item implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
     @Lob
     private String image;
 
