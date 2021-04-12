@@ -4,10 +4,7 @@ package ro.disi.entities;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +19,7 @@ public class Menu implements Serializable {
     @Type(type = "uuid-binary")
     private UUID id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Menu() {
