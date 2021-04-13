@@ -1,11 +1,10 @@
 package ro.disi.dtos;
 
 import org.springframework.hateoas.RepresentationModel;
-import ro.disi.utils.Role;
 
 import javax.validation.constraints.NotNull;
 
-public class PersonDTO extends RepresentationModel<PersonDTO> {
+public class RestaurantResponsibleDTO extends RepresentationModel<RestaurantResponsibleDTO> {
 
     @NotNull
     private String firstName;
@@ -20,16 +19,16 @@ public class PersonDTO extends RepresentationModel<PersonDTO> {
     @NotNull
     private String password;
     @NotNull
-    private Role role;
+    private String restaurantName;
 
-    public PersonDTO(@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Role role) {
+    public RestaurantResponsibleDTO(@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull String restaurantName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.location = location;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.restaurantName = restaurantName;
     }
 
     public String getFirstName() {
@@ -80,11 +79,11 @@ public class PersonDTO extends RepresentationModel<PersonDTO> {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }
