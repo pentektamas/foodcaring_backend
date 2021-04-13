@@ -39,7 +39,6 @@ public class AdminController {
     public ResponseEntity<String> insertRestaurantResponsible(@RequestBody RestaurantResponsibleDTO restaurantResponsibleDTO) {
         restaurantResponsibleDTO.setPassword(bCryptPasswordEncoder.encode(restaurantResponsibleDTO.getPassword()));
         Restaurant restaurant = restaurantService.getRestaurantByName(restaurantResponsibleDTO.getRestaurantName());
-        System.out.println("REst is: " + restaurant);
         boolean result = restaurantResponsibleService.insertRestaurantResponsible(RestaurantResponsibleBuilder.toRestaurantResponsible(restaurantResponsibleDTO, restaurant));
         if (result) {
             return new ResponseEntity<>("Restaurant responsible added successfully", HttpStatus.CREATED);
