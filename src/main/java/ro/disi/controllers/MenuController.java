@@ -25,15 +25,31 @@ public class MenuController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<List<MenuDTO>> getMenus(){
+    public ResponseEntity<List<MenuDTO>> getMenus() {
         List<MenuDTO> menuDTOS = menuService.findMenus();
         return new ResponseEntity<>(menuDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<MenuDTO> getMenu(@PathVariable("id") UUID id){
+        MenuDTO menuDTO = menuService.findMenuById(id);
+        return new ResponseEntity<MenuDTO>(menuDTO, HttpStatus.FOUND);
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<UUID> insertMenu(@Valid @RequestBody MenuDTO menuDTO){
+    public ResponseEntity<UUID> insertMenu(@Valid @RequestBody MenuDTO menuDTO) {
         UUID uuid = menuService.insertMenu(menuDTO);
         return new ResponseEntity<>(uuid, HttpStatus.CREATED);
     }
+
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<UUID> deleteMenu(@PathVariable("id") UUID id) {
+        UUID menuId = menuService.deleteMenu(id);
+        return new ResponseEntity<>(menuId, HttpStatus.OK);
+    }
+
+
 }

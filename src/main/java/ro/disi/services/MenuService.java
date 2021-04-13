@@ -5,11 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
-import ro.disi.dtos.ItemDTO;
 import ro.disi.dtos.MenuDTO;
-import ro.disi.dtos.builders.ItemBuilder;
 import ro.disi.dtos.builders.MenuBuilder;
-import ro.disi.entities.Item;
 import ro.disi.entities.Menu;
 import ro.disi.repositories.MenuRepository;
 
@@ -46,10 +43,20 @@ public class MenuService {
         return MenuBuilder.toMenuDTO(prosumerOptional.get());
     }
 
-    public UUID insertMenu(MenuDTO menuDTO){
+    public UUID insertMenu(MenuDTO menuDTO) {
         Menu menu = MenuBuilder.toEntity(menuDTO);
         menu = menuRepository.save(menu);
         LOGGER.debug("Menu with id {} was inserted in db", menu.getId());
         return menu.getId();
+    }
+
+    public UUID deleteMenu(UUID id) {
+        Optional<Menu> menuOptional = menuRepository.findById(id);
+        if (!menuOptional.isPresent()) {
+            LOGGER.error("Menu with id {} was not found in db", id);
+            throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + id);
+        }
+        menuRepository.deleteById(id);
+        return id;
     }
 }
