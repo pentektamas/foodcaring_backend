@@ -3,6 +3,7 @@ package ro.disi.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.MenuDTO;
@@ -58,5 +59,17 @@ public class MenuService {
         }
         menuRepository.deleteById(id);
         return id;
+    }
+
+    public MenuDTO updateMenu(MenuDTO menuDTO) {
+        Menu menu = MenuBuilder.toEntityWithId(menuDTO);
+        Optional<Menu> caregiverOptional = menuRepository.findById(menu.getId());
+        if (!caregiverOptional.isPresent()) {
+            LOGGER.error("Menu with id {} was not found in db", menu.getId());
+            throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + menu.getId());
+        }
+        Menu updatedMenu = menuRepository.save(menu);
+        LOGGER.debug("Menu with id {} was updated in db", menu.getId());
+        return MenuBuilder.toMenuDTO(menu);
     }
 }

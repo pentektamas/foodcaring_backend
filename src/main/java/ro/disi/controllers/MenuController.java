@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.MenuDTO;
+import ro.disi.entities.Menu;
 import ro.disi.services.MenuService;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class MenuController {
 
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<MenuDTO> getMenu(@PathVariable("id") UUID id){
+    public ResponseEntity<MenuDTO> getMenu(@PathVariable("id") UUID id) {
         MenuDTO menuDTO = menuService.findMenuById(id);
         return new ResponseEntity<MenuDTO>(menuDTO, HttpStatus.FOUND);
     }
@@ -49,6 +50,14 @@ public class MenuController {
     public ResponseEntity<UUID> deleteMenu(@PathVariable("id") UUID id) {
         UUID menuId = menuService.deleteMenu(id);
         return new ResponseEntity<>(menuId, HttpStatus.OK);
+    }
+
+
+    @PutMapping()
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<MenuDTO> updateMenu(@Valid @RequestBody MenuDTO menuDTO) {
+        MenuDTO dto = menuService.updateMenu(menuDTO);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
 
