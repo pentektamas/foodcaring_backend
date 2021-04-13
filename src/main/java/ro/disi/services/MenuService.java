@@ -45,4 +45,11 @@ public class MenuService {
         }
         return MenuBuilder.toMenuDTO(prosumerOptional.get());
     }
+
+    public UUID insertMenu(MenuDTO menuDTO){
+        Menu menu = MenuBuilder.toEntity(menuDTO);
+        menu = menuRepository.save(menu);
+        LOGGER.debug("Menu with id {} was inserted in db", menu.getId());
+        return menu.getId();
+    }
 }

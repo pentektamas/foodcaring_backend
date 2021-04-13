@@ -33,20 +33,21 @@ public class ItemController {
     }
 
     @PostMapping()
-    //preAuthorize
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<UUID> insertItem(@Valid @RequestBody ItemDTO itemDTO){
         UUID uuid = itemService.insertItem(itemDTO);
         return new ResponseEntity<>(uuid, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
-    //preAuthorize
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<ItemDTO> getItem(@PathVariable("id") UUID itemId){
         ItemDTO itemDTO = itemService.findItemById(itemId);
         return new ResponseEntity<>(itemDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<UUID> deleteItem(@PathVariable("id") UUID id){
         UUID itemId = itemService.deleteItem(id);
         return new ResponseEntity<>(itemId, HttpStatus.OK);

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,8 +31,12 @@ public class Item implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "itemList", cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Menu> menuList;
+
     public Item() {
     }
+
 
     public Item(String name, String description, String image, Double price) {
         this.name = name;

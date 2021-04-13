@@ -3,14 +3,14 @@ package ro.disi.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.MenuDTO;
 import ro.disi.services.MenuService;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -24,9 +24,16 @@ public class MenuController {
     }
 
     @GetMapping
-    //preauthorize
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<List<MenuDTO>> getMenus(){
         List<MenuDTO> menuDTOS = menuService.findMenus();
         return new ResponseEntity<>(menuDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<UUID> insertMenu(@Valid @RequestBody MenuDTO menuDTO){
+        UUID uuid = menuService.insertMenu(menuDTO);
+        return new ResponseEntity<>(uuid, HttpStatus.CREATED);
     }
 }

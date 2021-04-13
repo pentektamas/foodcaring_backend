@@ -19,10 +19,9 @@ public class MenuDTO {
     @NotNull
     private String name;
 
-    @NotNull
     private List<ItemDTO> itemList;
 
-    public MenuDTO(UUID id, @NotNull String name, @NotNull List<ItemDTO> itemList) {
+    public MenuDTO(UUID id, @NotNull String name, List<ItemDTO> itemList) {
         this.id = id;
         this.name = name;
         this.itemList = itemList;

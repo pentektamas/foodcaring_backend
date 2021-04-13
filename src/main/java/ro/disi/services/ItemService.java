@@ -54,7 +54,6 @@ public class ItemService {
             LOGGER.error("Item with id {} was not found in db", id);
             throw new ResourceNotFoundException(Item.class.getSimpleName() + " with id: " + id);
         }
-        Item item = itemOptional.get();
         itemRepository.deleteById(id);
         return id;
     }

@@ -23,9 +23,17 @@ public class MenuBuilder {
         List<ItemDTO> itemDTOS = menuDTO.getItemList();
         List<Item> itemList = new ArrayList<>();
         for (ItemDTO itemDTO : itemDTOS) {
+            itemList.add(ItemBuilder.toEntityWithId(itemDTO));
+        }
+        return new Menu(menuDTO.getName(), itemList);
+    }
+
+    public static Menu toEntityWithId(MenuDTO menuDTO) {
+        List<ItemDTO> itemDTOS = menuDTO.getItemList();
+        List<Item> itemList = new ArrayList<>();
+        for (ItemDTO itemDTO : itemDTOS) {
             itemList.add(ItemBuilder.toEntity(itemDTO));
         }
         return new Menu(menuDTO.getId(), menuDTO.getName(), itemList);
-
     }
 }
