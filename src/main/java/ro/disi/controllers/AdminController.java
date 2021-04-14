@@ -16,6 +16,8 @@ import ro.disi.repositories.RestaurantRepository;
 import ro.disi.services.RestaurantResponsibleService;
 import ro.disi.services.RestaurantService;
 
+import java.util.UUID;
+
 @RestController
 @CrossOrigin
 @Configuration
@@ -45,5 +47,14 @@ public class AdminController {
         } else {
             return new ResponseEntity<>("The account or the user already exists", HttpStatus.CONFLICT);
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping(value = "/responsible/update/{id}")
+    public ResponseEntity<UUID> updateRestaurantResponsible(@PathVariable("id") UUID responsibleID, @RequestBody RestaurantResponsibleDTO restaurantResponsibleDTO) {
+        restaurantResponsibleDTO.setPassword(bCryptPasswordEncoder.encode(restaurantResponsibleDTO.getPassword()));
+        Restaurant restaurant = restaurantService.getRestaurantByName(restaurantResponsibleDTO.getRestaurantName());
+        UUID updatedResponsibleID = restaurantResponsibleService.updateRestaurantResponsible(responsibleID, RestaurantResponsibleBuilder.toRestaurantResponsible(restaurantResponsibleDTO, restaurant));
+        return new ResponseEntity<>(updatedResponsibleID, HttpStatus.OK);
     }
 }
