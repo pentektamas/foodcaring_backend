@@ -3,9 +3,11 @@ package ro.disi.dtos;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class RestaurantResponsibleDTO extends RepresentationModel<RestaurantResponsibleDTO> {
 
+    private UUID id;
     @NotNull
     private String firstName;
     @NotNull
@@ -21,6 +23,10 @@ public class RestaurantResponsibleDTO extends RepresentationModel<RestaurantResp
     @NotNull
     private String restaurantName;
 
+    public RestaurantResponsibleDTO() {
+
+    }
+
     public RestaurantResponsibleDTO(@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull String restaurantName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +35,26 @@ public class RestaurantResponsibleDTO extends RepresentationModel<RestaurantResp
         this.username = username;
         this.password = password;
         this.restaurantName = restaurantName;
+    }
+
+    public RestaurantResponsibleDTO(UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull String restaurantName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.username = username;
+        this.password = password;
+        this.restaurantName = restaurantName;
+    }
+
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFirstName() {

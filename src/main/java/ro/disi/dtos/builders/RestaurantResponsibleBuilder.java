@@ -14,4 +14,10 @@ public class RestaurantResponsibleBuilder {
                 restaurantResponsibleDTO.getLocation(), restaurantResponsibleDTO.getPhoneNumber(),
                 restaurantResponsibleAccount, restaurant);
     }
+
+    public static RestaurantResponsibleDTO toRestaurantResponsibleDTO(RestaurantResponsible restaurantResponsible) {
+        return new RestaurantResponsibleDTO(restaurantResponsible.getId(), restaurantResponsible.getFirstName(), restaurantResponsible.getLastName(),
+                restaurantResponsible.getLocation(), restaurantResponsible.getPhoneNumber(),
+                restaurantResponsible.getAccount().getUsername(), restaurantResponsible.getAccount().getPassword(), restaurantResponsible.getRestaurant().getName());
+    }
 }
