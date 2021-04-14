@@ -1,6 +1,7 @@
 package ro.disi.entities;
 
 
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -22,7 +23,11 @@ public class Menu implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "menu_item",
+            joinColumns = @JoinColumn(name = "menu_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> itemList;
 
     public Menu() {
@@ -32,8 +37,8 @@ public class Menu implements Serializable {
         this.itemList = itemList;
     }
 
-    public Menu(UUID id, List<Item> itemList) {
-        this.id = id;
+    public Menu(String name, List<Item> itemList) {
+        this.name = name;
         this.itemList = itemList;
     }
 
@@ -46,6 +51,13 @@ public class Menu implements Serializable {
     public Menu(String name, List<Item> itemList) {
         this.name = name;
         this.itemList = itemList;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public static long getSerialVersionUID() {
