@@ -24,6 +24,7 @@ public class RestaurantResponsibleService {
             return false;
         } else {
             restaurantResponsibleRepository.save(restaurantResponsible);
+
             return true;
         }
     }

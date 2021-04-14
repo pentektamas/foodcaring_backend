@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.PersonDTO;
 import ro.disi.dtos.builders.PersonBuilder;
@@ -26,13 +28,15 @@ public class PersonController {
     private final DisadvantagedPersonService disadvantagedPersonService;
     private final DonorService donorService;
     private final RestaurantResponsibleService restaurantResponsibleService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public PersonController(AdminService adminService, DisadvantagedPersonService disadvantagedPersonService, DonorService donorService, RestaurantResponsibleService restaurantResponsibleService) {
+    public PersonController(AdminService adminService, DisadvantagedPersonService disadvantagedPersonService, DonorService donorService, RestaurantResponsibleService restaurantResponsibleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.adminService = adminService;
         this.disadvantagedPersonService = disadvantagedPersonService;
         this.donorService = donorService;
         this.restaurantResponsibleService = restaurantResponsibleService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @RequestMapping(value = "/login")
@@ -51,6 +55,7 @@ public class PersonController {
     @PostMapping(value = "/signup")
     public ResponseEntity<String> signup(@RequestBody PersonDTO personDTO) {
         boolean result = false;
+        personDTO.setPassword(bCryptPasswordEncoder.encode(personDTO.getPassword()));
         if (personDTO.getRole().equals(Role.ADMIN)) {
             result = adminService.insertAdmin(PersonBuilder.toAdmin(personDTO));
         }
