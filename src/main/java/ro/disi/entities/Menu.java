@@ -1,7 +1,5 @@
 package ro.disi.entities;
 
-
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -47,10 +45,6 @@ public class Menu implements Serializable {
         this.name = name;
         this.itemList = itemList;
     }
-
-    public Menu(String name, List<Item> itemList) {
-        this.name = name;
-        this.itemList = itemList;
 
     public String getName() {
         return name;
