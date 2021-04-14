@@ -16,6 +16,7 @@ import ro.disi.repositories.RestaurantRepository;
 import ro.disi.services.RestaurantResponsibleService;
 import ro.disi.services.RestaurantService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -56,5 +57,26 @@ public class AdminController {
         Restaurant restaurant = restaurantService.getRestaurantByName(restaurantResponsibleDTO.getRestaurantName());
         UUID updatedResponsibleID = restaurantResponsibleService.updateRestaurantResponsible(responsibleID, RestaurantResponsibleBuilder.toRestaurantResponsible(restaurantResponsibleDTO, restaurant));
         return new ResponseEntity<>(updatedResponsibleID, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping(value = "/responsible/delete/{id}")
+    public ResponseEntity<UUID> deleteRestaurantResponsible(@PathVariable("id") UUID responsibleID) {
+        UUID deletedResponsibleID = restaurantResponsibleService.deleteRestaurantResponsible(responsibleID);
+        return new ResponseEntity<>(deletedResponsibleID, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/responsibles")
+    public ResponseEntity<List<RestaurantResponsibleDTO>> getRestaurantResponsibles() {
+        List<RestaurantResponsibleDTO> restaurantResponsibleDTOS = restaurantResponsibleService.getAllRestaurantResponsibles();
+        return new ResponseEntity<>(restaurantResponsibleDTOS, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/responsible/{id}")
+    public ResponseEntity<RestaurantResponsibleDTO> getAllRestaurantResponsibleById(@PathVariable("id") UUID responsibleID) {
+        RestaurantResponsibleDTO restaurantResponsibleDTO = restaurantResponsibleService.getRestaurantResponsibleById(responsibleID);
+        return new ResponseEntity<>(restaurantResponsibleDTO, HttpStatus.OK);
     }
 }
