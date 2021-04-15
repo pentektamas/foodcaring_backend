@@ -63,8 +63,8 @@ public class MenuService {
 
     public MenuDTO updateMenu(MenuDTO menuDTO) {
         Menu menu = MenuBuilder.toEntityWithId(menuDTO);
-        Optional<Menu> caregiverOptional = menuRepository.findById(menu.getId());
-        if (!caregiverOptional.isPresent()) {
+        Optional<Menu> itemOptional = menuRepository.findById(menu.getId());
+        if (!itemOptional.isPresent()) {
             LOGGER.error("Menu with id {} was not found in db", menu.getId());
             throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + menu.getId());
         }

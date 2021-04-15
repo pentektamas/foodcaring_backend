@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.ItemDTO;
+import ro.disi.dtos.MenuDTO;
 import ro.disi.dtos.builders.ItemBuilder;
+import ro.disi.dtos.builders.MenuBuilder;
 import ro.disi.entities.Item;
+import ro.disi.entities.Menu;
 import ro.disi.repositories.ItemRepository;
 
 import java.util.List;
@@ -56,5 +59,17 @@ public class ItemService {
         }
         itemRepository.deleteById(id);
         return id;
+    }
+
+    public ItemDTO updateItem(ItemDTO itemDTO) {
+        Item item = ItemBuilder.toEntityWithId(itemDTO);
+        Optional<Item> itemOptional = itemRepository.findById(item.getId());
+        if (!itemOptional.isPresent()) {
+            LOGGER.error("Item with id {} was not found in db", item.getId());
+            throw new ResourceNotFoundException(Item.class.getSimpleName() + " with id: " + item.getId());
+        }
+        Item updatedItem = itemRepository.save(item);
+        LOGGER.debug("Item with id {} was updated in db", item.getId());
+        return ItemBuilder.toItemDTO(item);
     }
 }
