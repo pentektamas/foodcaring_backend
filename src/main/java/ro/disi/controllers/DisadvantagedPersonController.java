@@ -26,15 +26,9 @@ public class DisadvantagedPersonController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     @PostMapping
     public ResponseEntity<UUID> insertDisadvantagedPerson(@RequestBody DisadvantagedPersonDTO disadvantagedPersonDTO) {
-        System.out.println("HEI");
         UUID id=disadvantagedPersonService.insertDisadvantagedPerson(disadvantagedPersonDTO);
         return new ResponseEntity<UUID>( id,HttpStatus.CREATED);
     }
 
-    @GetMapping()
-    public void getDisadvantagedPerson() {
-        System.out.println("HEI");
-
-    }
 
 }
