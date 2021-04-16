@@ -14,6 +14,7 @@ public class RestaurantResponsible extends Person {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Type(type = "uuid-binary")
     private UUID id;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Restaurant restaurant;
 
