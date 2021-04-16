@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -111,5 +112,10 @@ public abstract class Person implements Serializable {
                 this.account.getUsername().equals(person.account.getUsername()) &&
                 this.account.getPassword().equals(person.account.getPassword()) &&
                 this.account.getRole().equals(person.account.getRole());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, location, phoneNumber, account);
     }
 }

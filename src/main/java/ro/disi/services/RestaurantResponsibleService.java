@@ -3,10 +3,14 @@ package ro.disi.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
+import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.RestaurantResponsibleDTO;
+import ro.disi.dtos.builders.RestaurantBuilder;
 import ro.disi.dtos.builders.RestaurantResponsibleBuilder;
+import ro.disi.entities.Restaurant;
 import ro.disi.entities.RestaurantResponsible;
 import ro.disi.repositories.AccountRepository;
+import ro.disi.repositories.RestaurantRepository;
 import ro.disi.repositories.RestaurantResponsibleRepository;
 
 import java.util.List;
@@ -19,11 +23,13 @@ public class RestaurantResponsibleService {
 
     private final RestaurantResponsibleRepository restaurantResponsibleRepository;
     private final AccountRepository accountRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public RestaurantResponsibleService(RestaurantResponsibleRepository restaurantResponsibleRepository, AccountRepository accountRepository) {
+    public RestaurantResponsibleService(RestaurantResponsibleRepository restaurantResponsibleRepository, AccountRepository accountRepository, RestaurantRepository restaurantRepository) {
         this.restaurantResponsibleRepository = restaurantResponsibleRepository;
         this.accountRepository = accountRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public boolean insertRestaurantResponsible(RestaurantResponsible restaurantResponsible) {
@@ -74,4 +80,21 @@ public class RestaurantResponsibleService {
         }
         return RestaurantResponsibleBuilder.toRestaurantResponsibleDTO(optionalRestaurantResponsible.get());
     }
+
+    public RestaurantDTO getRestaurant(String username) {
+        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccount_Username(username);
+        optionalRestaurantResponsible.orElseThrow(() -> new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + " with username " + username));
+        return RestaurantBuilder.toRestaurantDTO(optionalRestaurantResponsible.get().getRestaurant());
+    }
+
+    public RestaurantDTO setRestaurant(String username, UUID restaurantId) {
+        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccount_Username(username);
+        optionalRestaurantResponsible.orElseThrow(() -> new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + " with username " + username));
+        Optional<Restaurant> foundRestaurant = restaurantRepository.findById(restaurantId);
+        foundRestaurant.orElseThrow(() -> new ResourceNotFoundException(Restaurant.class.getSimpleName() + " with id: " + restaurantId));
+        optionalRestaurantResponsible.get().setRestaurant(foundRestaurant.get());
+        restaurantResponsibleRepository.save(optionalRestaurantResponsible.get());
+        return RestaurantBuilder.toRestaurantDTO(optionalRestaurantResponsible.get().getRestaurant());
+    }
+
 }
