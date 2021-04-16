@@ -80,6 +80,15 @@ public class DisadvantagedPersonService {
         return DisadvantagedPersonBuilder.todisadvantagedPersonDTO(prosumerOptional.get());
     }
 
+    public UUID deleteDisadvantagedPerson(UUID id) {
+        Optional<DisadvantagedPerson> menuOptional = disadvantagedPersonRepository.findById(id);
+        if (!menuOptional.isPresent()) {
+            LOGGER.error("Menu with id {} was not found in db", id);
+            throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + id);
+        }
+        disadvantagedPersonRepository.deleteById(id);
+        return id;
+    }
 
 
 }
