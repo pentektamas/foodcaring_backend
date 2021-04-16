@@ -28,7 +28,7 @@ public class DisadvantagedPersonBuilder {
                 accountDisadvantagePerson);
     }
 
-    public static DisadvantagedPersonDTO todisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
+    public static DisadvantagedPersonDTO toDisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
         return new DisadvantagedPersonDTO(disadvantagedPerson.getId(),disadvantagedPerson.getFirstName(),disadvantagedPerson.getLastName(),disadvantagedPerson.getLocation(),disadvantagedPerson.getPhoneNumber(),disadvantagedPerson.getAccount().getUsername(),disadvantagedPerson.getAccount().getPassword(),disadvantagedPerson.getAccount().getRole());
     }
 

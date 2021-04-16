@@ -52,6 +52,8 @@ public class DisadvantagedPersonService {
 
     public DisadvantagedPersonDTO updateDisadvantagedPerson(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         DisadvantagedPerson disadvantagedPerson = DisadvantagedPersonBuilder.toEntityWithId(disadvantagedPersonDTO);
+        String password=bCryptPasswordEncoder.encode(disadvantagedPerson.getAccount().getPassword());
+        disadvantagedPerson.getAccount().setPassword(password);
         Optional<DisadvantagedPerson> itemOptional = disadvantagedPersonRepository.findById(disadvantagedPerson.getId());
         if (!itemOptional.isPresent()) {
             LOGGER.error("Menu with id {} was not found in db", disadvantagedPerson.getId());
@@ -59,14 +61,14 @@ public class DisadvantagedPersonService {
         }
         DisadvantagedPerson updatedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         LOGGER.debug("Menu with id {} was updated in db", disadvantagedPerson.getId());
-        return DisadvantagedPersonBuilder.todisadvantagedPersonDTO(disadvantagedPerson);
+        return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(disadvantagedPerson);
     }
 
 
     public List<DisadvantagedPersonDTO> findDisadvantagedPerson() {
         List<DisadvantagedPerson> disadvantagedPersons = disadvantagedPersonRepository.findAll();
         return disadvantagedPersons.stream()
-                .map(DisadvantagedPersonBuilder::todisadvantagedPersonDTO)
+                .map(DisadvantagedPersonBuilder::toDisadvantagedPersonDTO)
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +79,7 @@ public class DisadvantagedPersonService {
             LOGGER.error("Menu with id {} was not found in db", uuid);
             throw new ResourceNotFoundException(Menu.class.getSimpleName() + "with id" + uuid);
         }
-        return DisadvantagedPersonBuilder.todisadvantagedPersonDTO(prosumerOptional.get());
+        return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(prosumerOptional.get());
     }
 
 
