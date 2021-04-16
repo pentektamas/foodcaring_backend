@@ -50,6 +50,14 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
         this.role = role;
     }
 
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

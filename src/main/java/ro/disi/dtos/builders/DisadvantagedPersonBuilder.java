@@ -1,11 +1,10 @@
 package ro.disi.dtos.builders;
 
-import ro.disi.dtos.DisadvantagedPersonDTO;
-import ro.disi.dtos.PersonDummyDTO;
-import ro.disi.dtos.PersonDummyDetailsDTO;
-import ro.disi.entities.Account;
-import ro.disi.entities.DisadvantagedPerson;
-import ro.disi.entities.PersonDummy;
+import ro.disi.dtos.*;
+import ro.disi.entities.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DisadvantagedPersonBuilder {
 
@@ -14,13 +13,9 @@ public class DisadvantagedPersonBuilder {
     private DisadvantagedPersonBuilder() {
     }
 
-  /*  public static DisadvantagedPersonDTO toDisadvantagedPersonDTO(DisadvantagedPerson  disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(),disadvantagedPerson.getLocation(),disadvantagedPerson.getPhoneNumber()
-                ,disadvantagedPerson.getAccount().getUsername(),disadvantagedPerson.getAccount().getPassword(),disadvantagedPerson.getAccount().getRole());
-    }
-*/
-    public static PersonDummyDetailsDTO toPersonDummyDetailsDTO(PersonDummy person) {
-        return new PersonDummyDetailsDTO(person.getId(), person.getName(), person.getAddress(), person.getAge());
+    public static DisadvantagedPerson toEntityWithId(DisadvantagedPersonDTO disadvantagedPersonDTO) {
+        Account accountDisadvantagePerson = new Account(disadvantagedPersonDTO.getUsername(), disadvantagedPersonDTO.getPassword(),disadvantagedPersonDTO.getRole());
+        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(),disadvantagedPersonDTO.getLocation(),disadvantagedPersonDTO.getPhoneNumber(),accountDisadvantagePerson);
     }
 
     public static DisadvantagedPerson toEntity(DisadvantagedPersonDTO disadvantagedPersonDTO) {
@@ -32,4 +27,9 @@ public class DisadvantagedPersonBuilder {
                 disadvantagedPersonDTO.getPhoneNumber(),
                 accountDisadvantagePerson);
     }
+
+    public static DisadvantagedPersonDTO todisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(),disadvantagedPerson.getFirstName(),disadvantagedPerson.getLastName(),disadvantagedPerson.getLocation(),disadvantagedPerson.getPhoneNumber(),disadvantagedPerson.getAccount().getUsername(),disadvantagedPerson.getAccount().getPassword(),disadvantagedPerson.getAccount().getRole());
+    }
+
 }
