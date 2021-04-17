@@ -86,6 +86,16 @@ public class DisadvantagedPersonService {
                 .collect(Collectors.toList());
     }
 
+    public UUID deleteDisadvantagedPerson(UUID id) {
+        Optional<DisadvantagedPerson> menuOptional = disadvantagedPersonRepository.findById(id);
+        if (!menuOptional.isPresent()) {
+            LOGGER.error("DisadvantagedPerson with id {} was not found in db", id);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with id: " + id);
+        }
+        disadvantagedPersonRepository.deleteById(id);
+        return id;
+    }
+
     public DisadvantagedPersonDTO updatePriorityOfDisadvantagedPerson(UUID disadvantagedPersonID) {
         Optional<DisadvantagedPerson> disadvantagedPersonOptional = disadvantagedPersonRepository.findById(disadvantagedPersonID);
         if (!disadvantagedPersonOptional.isPresent()) {
@@ -97,6 +107,4 @@ public class DisadvantagedPersonService {
         disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithHelped(disadvantagedPerson);
     }
-
-
 }
