@@ -13,7 +13,6 @@ import ro.disi.entities.Restaurant;
 import ro.disi.repositories.MenuRepository;
 import ro.disi.repositories.RestaurantRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -41,7 +40,7 @@ public class RestaurantService {
 
     public RestaurantDTO findRestaurantById(UUID id) {
         Optional<Restaurant> foundRestaurant = restaurantRepository.findById(id);
-        foundRestaurant.orElseThrow(()  -> new ResourceNotFoundException("Restaurant does not exist!"));
+        foundRestaurant.orElseThrow(() -> new ResourceNotFoundException("Restaurant does not exist!"));
         return RestaurantBuilder.toRestaurantDTO(foundRestaurant.get());
     }
 
@@ -59,7 +58,7 @@ public class RestaurantService {
 
     public RestaurantDTO updateRestaurant(RestaurantDTO restaurantDTO) {
         Optional<Restaurant> foundRestaurant = restaurantRepository.findById(restaurantDTO.getId());
-        foundRestaurant.orElseThrow(()  -> new ResourceNotFoundException("Restaurant does not exist!"));
+        foundRestaurant.orElseThrow(() -> new ResourceNotFoundException("Restaurant does not exist!"));
         Restaurant restaurant = foundRestaurant.get();
         restaurant.setLocation(restaurantDTO.getLocation());
         restaurant.setName(restaurantDTO.getName());
@@ -67,7 +66,7 @@ public class RestaurantService {
         Set<Menu> newMenus = restaurantDTO.getMenus().stream().map(MenuBuilder::toEntityWithId).collect(Collectors.toSet());
         for (Menu menu : newMenus) {
             if (menu.getId() == null) {
-                    menuRepository.save(menu);
+                menuRepository.save(menu);
             }
         }
         oldMenus.removeAll(oldMenus.stream().filter((menu) -> !newMenus.contains(menu)).collect(Collectors.toSet()));

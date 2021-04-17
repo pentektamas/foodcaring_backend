@@ -13,8 +13,10 @@ public class MenuBuilder {
     public static MenuDTO toMenuDTO(Menu menu) {
         List<Item> items = menu.getItemList();
         List<ItemDTO> itemDTOS = new ArrayList<>();
-        for (Item item : items) {
-            itemDTOS.add(ItemBuilder.toItemDTO(item));
+        if (items != null) {
+            for (Item item : items) {
+                itemDTOS.add(ItemBuilder.toItemDTO(item));
+            }
         }
         return new MenuDTO(menu.getId(), menu.getName(), itemDTOS);
     }
@@ -22,8 +24,10 @@ public class MenuBuilder {
     public static Menu toEntity(MenuDTO menuDTO) {
         List<ItemDTO> itemDTOS = menuDTO.getItemList();
         List<Item> itemList = new ArrayList<>();
-        for (ItemDTO itemDTO : itemDTOS) {
-            itemList.add(ItemBuilder.toEntityWithId(itemDTO));
+        if (itemDTOS != null) {
+            for (ItemDTO itemDTO : itemDTOS) {
+                itemList.add(ItemBuilder.toEntityWithId(itemDTO));
+            }
         }
         return new Menu(menuDTO.getName(), itemList);
     }
@@ -31,8 +35,10 @@ public class MenuBuilder {
     public static Menu toEntityWithId(MenuDTO menuDTO) {
         List<ItemDTO> itemDTOS = menuDTO.getItemList();
         List<Item> itemList = new ArrayList<>();
-        for (ItemDTO itemDTO : itemDTOS) {
-            itemList.add(ItemBuilder.toEntity(itemDTO));
+        if (itemDTOS != null) {
+            for (ItemDTO itemDTO : itemDTOS) {
+                itemList.add(ItemBuilder.toEntityWithId(itemDTO));
+            }
         }
         return new Menu(menuDTO.getId(), menuDTO.getName(), itemList);
     }
