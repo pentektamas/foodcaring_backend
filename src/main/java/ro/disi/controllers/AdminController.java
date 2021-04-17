@@ -39,14 +39,14 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/responsible/insert")
-    public ResponseEntity<String> insertRestaurantResponsible(@RequestBody RestaurantResponsibleDTO restaurantResponsibleDTO) {
+    public ResponseEntity<UUID> insertRestaurantResponsible(@RequestBody RestaurantResponsibleDTO restaurantResponsibleDTO) {
         restaurantResponsibleDTO.setPassword(bCryptPasswordEncoder.encode(restaurantResponsibleDTO.getPassword()));
         Restaurant restaurant = restaurantService.getRestaurantByName(restaurantResponsibleDTO.getRestaurantName());
         boolean result = restaurantResponsibleService.insertRestaurantResponsible(RestaurantResponsibleBuilder.toRestaurantResponsible(restaurantResponsibleDTO, restaurant));
         if (result) {
-            return new ResponseEntity<>("Restaurant responsible added successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>(restaurant.getId(), HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("The account or the user already exists", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
