@@ -20,4 +20,4 @@ COPY --from=builder /root/snapshot-dependencies/ ./
 RUN sleep 10
 COPY --from=builder /root/spring-boot-loader/ ./
 COPY --from=builder /root/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher","-XX:+UseContainerSupport -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -Xms256m -Xmx256m -XX:+UseG1GC -XX:+UseSerialGC -Xss512k -XX:MaxRAM=72m"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher","-XX:+UseContainerSupport -XX:+UnlockExperimentalVMOptions"]
