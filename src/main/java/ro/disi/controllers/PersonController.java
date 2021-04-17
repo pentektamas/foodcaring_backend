@@ -69,9 +69,9 @@ public class PersonController {
             result = restaurantResponsibleService.insertRestaurantResponsible(PersonBuilder.toRestaurantResponsible(personDTO));
         }
         if (result) {
-            return new ResponseEntity<>("User successfully inserted", HttpStatus.CREATED);
+            return new ResponseEntity<>( HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("The account or the user already exists", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
