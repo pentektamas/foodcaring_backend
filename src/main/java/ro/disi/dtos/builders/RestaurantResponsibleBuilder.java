@@ -18,6 +18,6 @@ public class RestaurantResponsibleBuilder {
     public static RestaurantResponsibleDTO toRestaurantResponsibleDTO(RestaurantResponsible restaurantResponsible) {
         return new RestaurantResponsibleDTO(restaurantResponsible.getId(), restaurantResponsible.getFirstName(), restaurantResponsible.getLastName(),
                 restaurantResponsible.getLocation(), restaurantResponsible.getPhoneNumber(),
-                restaurantResponsible.getAccount().getUsername(), restaurantResponsible.getAccount().getPassword(), restaurantResponsible.getRestaurant().getName());
+                restaurantResponsible.getAccount().getUsername(), restaurantResponsible.getAccount().getPassword(), (restaurantResponsible.getRestaurant() != null) ? (restaurantResponsible.getRestaurant().getName()) : null);
     }
 }
