@@ -38,10 +38,10 @@ public class MenuController {
         return new ResponseEntity<MenuDTO>(menuDTO, HttpStatus.FOUND);
     }
 
-    @PostMapping
+    @PostMapping(value = "/{restaurantId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<UUID> insertMenu(@Valid @RequestBody MenuDTO menuDTO) {
-        UUID uuid = menuService.insertMenu(menuDTO);
+    public ResponseEntity<UUID> insertMenu(@PathVariable("restaurantId") UUID restaurantId, @Valid @RequestBody MenuDTO menuDTO) {
+        UUID uuid = menuService.insertMenu(restaurantId, menuDTO);
         return new ResponseEntity<>(uuid, HttpStatus.CREATED);
     }
 

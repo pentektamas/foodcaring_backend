@@ -9,8 +9,11 @@ import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.MenuDTO;
 import ro.disi.dtos.builders.MenuBuilder;
 import ro.disi.entities.Menu;
+import ro.disi.entities.Restaurant;
 import ro.disi.repositories.MenuRepository;
+import ro.disi.repositories.RestaurantRepository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,10 +25,12 @@ public class MenuService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuService.class);
 
     private final MenuRepository menuRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public MenuService(MenuRepository menuRepository) {
+    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
         this.menuRepository = menuRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public List<MenuDTO> findMenus() {
@@ -44,9 +49,18 @@ public class MenuService {
         return MenuBuilder.toMenuDTO(prosumerOptional.get());
     }
 
-    public UUID insertMenu(MenuDTO menuDTO) {
+    public UUID insertMenu(UUID restaurantId, MenuDTO menuDTO) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        if (!restaurantOptional.isPresent()) {
+            LOGGER.error("Restaurant with id {} was not found in db", restaurantId);
+            throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + restaurantId);
+        }
         Menu menu = MenuBuilder.toEntity(menuDTO);
+        Restaurant restaurant = restaurantOptional.get();
+        menu.setRestaurant(restaurant);
         menu = menuRepository.save(menu);
+        restaurant.getMenus().add(menu);
+        restaurantRepository.save(restaurant);
         LOGGER.debug("Menu with id {} was inserted in db", menu.getId());
         return menu.getId();
     }
