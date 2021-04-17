@@ -22,13 +22,16 @@ public class Menu implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "menu_item",
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> itemList;
 
+    @ManyToOne()
+    @JoinColumn(name="restaurant_id", insertable = false, updatable = false)
+    private Restaurant restaurant;
 
     public Menu() {
     }
@@ -76,6 +79,14 @@ public class Menu implements Serializable {
         this.itemList = itemList;
     }
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,5 +99,15 @@ public class Menu implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", itemList=" + itemList +
+                ", restaurant=" + restaurant +
+                '}';
     }
 }
