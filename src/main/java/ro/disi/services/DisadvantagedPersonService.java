@@ -6,18 +6,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.DisadvantagedPersonDTO;
-import ro.disi.dtos.MenuDTO;
 import ro.disi.dtos.builders.DisadvantagedPersonBuilder;
-import ro.disi.dtos.builders.MenuBuilder;
 import org.slf4j.LoggerFactory;
 import ro.disi.entities.DisadvantagedPerson;
-import ro.disi.entities.Menu;
 import ro.disi.repositories.AccountRepository;
 import ro.disi.repositories.DisadvantagedPersonRepository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +22,7 @@ public class DisadvantagedPersonService {
     private final AccountRepository accountRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     public DisadvantagedPersonService(DisadvantagedPersonRepository disadvantagedPersonRepository, AccountRepository accountRepository) {
         this.disadvantagedPersonRepository = disadvantagedPersonRepository;
@@ -43,24 +39,24 @@ public class DisadvantagedPersonService {
         }
     }
 
-    public UUID insertDisadvantagedPerson(DisadvantagedPersonDTO disadvantagedPersonDTO){
-        DisadvantagedPerson disadvantagedPerson= DisadvantagedPersonBuilder.toEntity(disadvantagedPersonDTO);
+    public UUID insertDisadvantagedPerson(DisadvantagedPersonDTO disadvantagedPersonDTO) {
+        DisadvantagedPerson disadvantagedPerson = DisadvantagedPersonBuilder.toEntity(disadvantagedPersonDTO);
         disadvantagedPerson.getAccount().setPassword(bCryptPasswordEncoder.encode(disadvantagedPersonDTO.getPassword()));
-        disadvantagedPerson=disadvantagedPersonRepository.save(disadvantagedPerson);
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         return disadvantagedPerson.getId();
     }
 
     public DisadvantagedPersonDTO updateDisadvantagedPerson(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         DisadvantagedPerson disadvantagedPerson = DisadvantagedPersonBuilder.toEntityWithId(disadvantagedPersonDTO);
-        String password=bCryptPasswordEncoder.encode(disadvantagedPerson.getAccount().getPassword());
+        String password = bCryptPasswordEncoder.encode(disadvantagedPerson.getAccount().getPassword());
         disadvantagedPerson.getAccount().setPassword(password);
         Optional<DisadvantagedPerson> itemOptional = disadvantagedPersonRepository.findById(disadvantagedPerson.getId());
         if (!itemOptional.isPresent()) {
-            LOGGER.error("Menu with id {} was not found in db", disadvantagedPerson.getId());
-            throw new ResourceNotFoundException(Menu.class.getSimpleName() + " with id: " + disadvantagedPerson.getId());
+            LOGGER.error("Disadvantaged person with id {} was not found in db", disadvantagedPerson.getId());
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with id: " + disadvantagedPerson.getId());
         }
         DisadvantagedPerson updatedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
-        LOGGER.debug("Menu with id {} was updated in db", disadvantagedPerson.getId());
+        LOGGER.debug("Disadvantaged person with id {} was updated in db", disadvantagedPerson.getId());
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(disadvantagedPerson);
     }
 
@@ -76,12 +72,31 @@ public class DisadvantagedPersonService {
     public DisadvantagedPersonDTO findDisadvantagedPersonById(UUID uuid) {
         Optional<DisadvantagedPerson> prosumerOptional = disadvantagedPersonRepository.findById(uuid);
         if (!prosumerOptional.isPresent()) {
-            LOGGER.error("Menu with id {} was not found in db", uuid);
-            throw new ResourceNotFoundException(Menu.class.getSimpleName() + "with id" + uuid);
+            LOGGER.error("Disadvantaged person with id {} was not found in db", uuid);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with id" + uuid);
         }
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(prosumerOptional.get());
     }
 
+    public List<DisadvantagedPersonDTO> getSortedDisadvantagedPersons() {
+        List<DisadvantagedPerson> disadvantagedPersons = disadvantagedPersonRepository.findAll();
+        disadvantagedPersons.sort((p1, p2) -> Boolean.compare(p1.isHelped(), p2.isHelped()));
+        return disadvantagedPersons.stream()
+                .map(DisadvantagedPersonBuilder::toDisadvantagedPersonDtoWithHelped)
+                .collect(Collectors.toList());
+    }
+
+    public DisadvantagedPersonDTO updatePriorityOfDisadvantagedPerson(UUID disadvantagedPersonID) {
+        Optional<DisadvantagedPerson> disadvantagedPersonOptional = disadvantagedPersonRepository.findById(disadvantagedPersonID);
+        if (!disadvantagedPersonOptional.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", disadvantagedPersonID);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with id" + disadvantagedPersonID);
+        }
+        DisadvantagedPerson disadvantagedPerson = disadvantagedPersonOptional.get();
+        disadvantagedPerson.setHelped(!disadvantagedPerson.isHelped());
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
+        return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithHelped(disadvantagedPerson);
+    }
 
 
 }

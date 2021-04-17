@@ -1,13 +1,5 @@
 package ro.disi.dtos;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import ro.disi.entities.Item;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;

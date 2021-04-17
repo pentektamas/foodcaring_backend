@@ -6,11 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.PersonDTO;
 import ro.disi.dtos.builders.PersonBuilder;
-import ro.disi.entities.DisadvantagedPerson;
 import ro.disi.services.AdminService;
 import ro.disi.services.DisadvantagedPersonService;
 import ro.disi.services.DonorService;
@@ -69,7 +67,7 @@ public class PersonController {
             result = restaurantResponsibleService.insertRestaurantResponsible(PersonBuilder.toRestaurantResponsible(personDTO));
         }
         if (result) {
-            return new ResponseEntity<>( HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }

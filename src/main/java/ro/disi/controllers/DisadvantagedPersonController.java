@@ -6,8 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.DisadvantagedPersonDTO;
-import ro.disi.dtos.MenuDTO;
-import ro.disi.dtos.PersonDTO;
 import ro.disi.services.DisadvantagedPersonService;
 
 import javax.validation.Valid;
@@ -20,6 +18,7 @@ import java.util.UUID;
 public class DisadvantagedPersonController {
 
     private final DisadvantagedPersonService disadvantagedPersonService;
+
     @Autowired
     public DisadvantagedPersonController(DisadvantagedPersonService disadvantagedPersonService) {
         this.disadvantagedPersonService = disadvantagedPersonService;
@@ -28,20 +27,20 @@ public class DisadvantagedPersonController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     @PostMapping
     public ResponseEntity<UUID> insertDisadvantagedPerson(@RequestBody DisadvantagedPersonDTO disadvantagedPersonDTO) {
-        UUID id=disadvantagedPersonService.insertDisadvantagedPerson(disadvantagedPersonDTO);
-        return new ResponseEntity<UUID>( id,HttpStatus.CREATED);
+        UUID id = disadvantagedPersonService.insertDisadvantagedPerson(disadvantagedPersonDTO);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
-    @PutMapping()
+    @PutMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<DisadvantagedPersonDTO> updateMenu(@Valid @RequestBody DisadvantagedPersonDTO disadvantagedPersonDTO) {
+    public ResponseEntity<DisadvantagedPersonDTO> updateDisadvantagedPerson(@Valid @RequestBody DisadvantagedPersonDTO disadvantagedPersonDTO) {
         DisadvantagedPersonDTO dto = disadvantagedPersonService.updateDisadvantagedPerson(disadvantagedPersonDTO);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<List<DisadvantagedPersonDTO>> getDisadvantagedPerson() {
+    public ResponseEntity<List<DisadvantagedPersonDTO>> getDisadvantagedPersons() {
         List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = disadvantagedPersonService.findDisadvantagedPerson();
         return new ResponseEntity<>(disadvantagedPersonDTOS, HttpStatus.OK);
     }
@@ -51,7 +50,20 @@ public class DisadvantagedPersonController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<DisadvantagedPersonDTO> getDisadvantagedPerson(@PathVariable("id") UUID id) {
         DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.findDisadvantagedPersonById(id);
-        return new ResponseEntity<DisadvantagedPersonDTO>(disadvantagedPersonDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.FOUND);
     }
 
+    @GetMapping(value = "/sorted")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<List<DisadvantagedPersonDTO>> getSortedDisadvantagedPersons() {
+        List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = disadvantagedPersonService.getSortedDisadvantagedPersons();
+        return new ResponseEntity<>(disadvantagedPersonDTOS, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/priority/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<DisadvantagedPersonDTO> updatePriorityOfDisadvantagedPerson(@PathVariable("id") UUID id) {
+        DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.updatePriorityOfDisadvantagedPerson(id);
+        return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.OK);
+    }
 }

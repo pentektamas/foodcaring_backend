@@ -45,7 +45,7 @@ public class RestaurantResponsibleService {
     public UUID updateRestaurantResponsible(UUID responsibleID, RestaurantResponsible restaurantResponsible) {
         Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findById(responsibleID);
         if (!optionalRestaurantResponsible.isPresent()) {
-            throw new ResourceNotFoundException(RestaurantResponsible.class + "with id: " + responsibleID);
+            throw new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + "with id: " + responsibleID);
         }
         RestaurantResponsible foundRestaurantResponsible = optionalRestaurantResponsible.get();
         foundRestaurantResponsible.setFirstName(restaurantResponsible.getFirstName());
