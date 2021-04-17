@@ -53,6 +53,13 @@ public class DisadvantagedPersonController {
         return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.FOUND);
     }
 
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<UUID> deleteMenu(@PathVariable("id") UUID id) {
+        UUID disadvantagedPerson = disadvantagedPersonService.deleteDisadvantagedPerson(id);
+        return new ResponseEntity<>(disadvantagedPerson, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/sorted")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<List<DisadvantagedPersonDTO>> getSortedDisadvantagedPersons() {

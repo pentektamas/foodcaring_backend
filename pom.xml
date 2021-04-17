@@ -98,6 +98,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -148,7 +153,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>10%</minimum>
+                                            <minimum>0%</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
