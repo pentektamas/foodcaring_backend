@@ -1,12 +1,5 @@
 package ro.disi.dtos;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-
-import javax.naming.spi.DirObjectFactory;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 

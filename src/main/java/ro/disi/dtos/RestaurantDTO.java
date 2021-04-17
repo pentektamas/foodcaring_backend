@@ -3,7 +3,6 @@ package ro.disi.dtos;
 import io.micrometer.core.lang.NonNull;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

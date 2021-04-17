@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.RestaurantDTO;
 import ro.disi.services.RestaurantResponsibleService;
-import ro.disi.services.RestaurantService;
 
 import java.util.UUID;
 

@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.ItemDTO;
-import ro.disi.dtos.MenuDTO;
 import ro.disi.dtos.builders.ItemBuilder;
-import ro.disi.dtos.builders.MenuBuilder;
 import ro.disi.entities.Item;
-import ro.disi.entities.Menu;
 import ro.disi.repositories.ItemRepository;
 
 import java.util.List;

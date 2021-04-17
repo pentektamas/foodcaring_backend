@@ -1,6 +1,5 @@
 package ro.disi.dtos;
 
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import ro.disi.utils.Role;
 
@@ -39,8 +38,9 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
         this.password = password;
         this.role = role;
     }
-    public PersonDTO(UUID id,@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Role role) {
-        this.id=id;
+
+    public PersonDTO(UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Role role) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.location = location;

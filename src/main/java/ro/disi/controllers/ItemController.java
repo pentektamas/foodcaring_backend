@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.ItemDTO;
-import ro.disi.entities.Item;
 import ro.disi.services.ItemService;
 
 import javax.validation.Valid;

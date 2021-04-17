@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.MenuDTO;
-import ro.disi.entities.Menu;
 import ro.disi.services.MenuService;
 
 import javax.validation.Valid;
