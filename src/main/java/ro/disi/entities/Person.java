@@ -43,6 +43,15 @@ public abstract class Person implements Serializable {
         this.account = account;
     }
 
+    public Person(UUID id,String firstName, String lastName, String location, String phoneNumber, Account account) {
+        this.id=id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.account = account;
+    }
+
     public Person() {
 
     }

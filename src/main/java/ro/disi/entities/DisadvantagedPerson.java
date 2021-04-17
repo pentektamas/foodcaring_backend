@@ -3,6 +3,7 @@ package ro.disi.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 public class DisadvantagedPerson extends Person implements Serializable {
@@ -21,8 +22,14 @@ public class DisadvantagedPerson extends Person implements Serializable {
         super(firstName, lastName, location, phoneNumber, account);
     }
 
+
+    public DisadvantagedPerson(UUID id,String firstName, String lastName, String location, String phoneNumber, Account account) {
+        super(id,firstName, lastName, location, phoneNumber, account);
+    }
+
     public DisadvantagedPerson() {
     }
+
 
     public boolean isHelped() {
         return helped;
