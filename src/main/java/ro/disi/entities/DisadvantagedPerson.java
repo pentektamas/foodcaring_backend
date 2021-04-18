@@ -12,10 +12,23 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     @Column(nullable = false)
     private boolean helped;
+    @Column(nullable = false)
+    private int priority;
+
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, int priority) {
+        super(firstName, lastName, location, phoneNumber, account);
+        this.helped = helped;
+        this.priority = priority;
+    }
 
     public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped) {
         super(firstName, lastName, location, phoneNumber, account);
         this.helped = helped;
+    }
+
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority) {
+        super(firstName, lastName, location, phoneNumber, account);
+        this.priority = priority;
     }
 
     public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account) {
@@ -23,8 +36,13 @@ public class DisadvantagedPerson extends Person implements Serializable {
     }
 
 
-    public DisadvantagedPerson(UUID id,String firstName, String lastName, String location, String phoneNumber, Account account) {
-        super(id,firstName, lastName, location, phoneNumber, account);
+    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account) {
+        super(id, firstName, lastName, location, phoneNumber, account);
+    }
+
+    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority) {
+        super(id, firstName, lastName, location, phoneNumber, account);
+        this.priority = priority;
     }
 
     public DisadvantagedPerson() {
@@ -37,5 +55,13 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     public void setHelped(boolean helped) {
         this.helped = helped;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

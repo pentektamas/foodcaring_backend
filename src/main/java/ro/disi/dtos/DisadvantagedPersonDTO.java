@@ -8,6 +8,8 @@ public class DisadvantagedPersonDTO extends PersonDTO {
 
     private boolean helped;
 
+    private int priority;
+
     public DisadvantagedPersonDTO() {
     }
 
@@ -19,16 +21,16 @@ public class DisadvantagedPersonDTO extends PersonDTO {
         super(id, firstName, lastName, location, phoneNumber, username, password, role);
     }
 
-    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, boolean helped) {
+    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, int priority) {
         super(id, firstName, lastName, location, phoneNumber, username, password, role);
-        this.helped = helped;
+        this.priority = priority;
     }
 
-    public boolean isHelped() {
-        return helped;
+    public int getPriority() {
+        return priority;
     }
 
-    public void setHelped(boolean helped) {
-        this.helped = helped;
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

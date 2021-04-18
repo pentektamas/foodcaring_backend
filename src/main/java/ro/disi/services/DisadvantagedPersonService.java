@@ -80,9 +80,9 @@ public class DisadvantagedPersonService {
 
     public List<DisadvantagedPersonDTO> getSortedDisadvantagedPersons() {
         List<DisadvantagedPerson> disadvantagedPersons = disadvantagedPersonRepository.findAll();
-        disadvantagedPersons.sort((p1, p2) -> Boolean.compare(p1.isHelped(), p2.isHelped()));
+        disadvantagedPersons.sort(Comparator.comparingInt(DisadvantagedPerson::getPriority).reversed());
         return disadvantagedPersons.stream()
-                .map(DisadvantagedPersonBuilder::toDisadvantagedPersonDtoWithHelped)
+                .map(DisadvantagedPersonBuilder::toDisadvantagedPersonDtoWithPriority)
                 .collect(Collectors.toList());
     }
 
@@ -96,15 +96,15 @@ public class DisadvantagedPersonService {
         return id;
     }
 
-    public DisadvantagedPersonDTO updatePriorityOfDisadvantagedPerson(UUID disadvantagedPersonID) {
+    public DisadvantagedPersonDTO updatePriorityOfDisadvantagedPerson(UUID disadvantagedPersonID, int priority) {
         Optional<DisadvantagedPerson> disadvantagedPersonOptional = disadvantagedPersonRepository.findById(disadvantagedPersonID);
         if (!disadvantagedPersonOptional.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", disadvantagedPersonID);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with id" + disadvantagedPersonID);
         }
         DisadvantagedPerson disadvantagedPerson = disadvantagedPersonOptional.get();
-        disadvantagedPerson.setHelped(!disadvantagedPerson.isHelped());
+        disadvantagedPerson.setPriority(disadvantagedPerson.getPriority() + priority);
         disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
-        return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithHelped(disadvantagedPerson);
+        return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithPriority(disadvantagedPerson);
     }
 }
