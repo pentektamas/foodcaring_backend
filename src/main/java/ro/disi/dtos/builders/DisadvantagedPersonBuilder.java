@@ -28,8 +28,8 @@ public class DisadvantagedPersonBuilder {
         return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole());
     }
 
-    public static DisadvantagedPersonDTO toDisadvantagedPersonDtoWithHelped(DisadvantagedPerson disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.isHelped());
+    public static DisadvantagedPersonDTO toDisadvantagedPersonDtoWithPriority(DisadvantagedPerson disadvantagedPerson) {
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getPriority());
     }
 
 }

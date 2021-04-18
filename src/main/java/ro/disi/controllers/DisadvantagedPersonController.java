@@ -67,10 +67,10 @@ public class DisadvantagedPersonController {
         return new ResponseEntity<>(disadvantagedPersonDTOS, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/priority/{id}")
+    @PutMapping(value = "/priority/{id}/{priority}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<DisadvantagedPersonDTO> updatePriorityOfDisadvantagedPerson(@PathVariable("id") UUID id) {
-        DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.updatePriorityOfDisadvantagedPerson(id);
+    public ResponseEntity<DisadvantagedPersonDTO> updatePriorityOfDisadvantagedPerson(@PathVariable("id") UUID id, @PathVariable("priority") int priority) {
+        DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.updatePriorityOfDisadvantagedPerson(id, priority);
         return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.OK);
     }
 }
