@@ -11,7 +11,7 @@ public class DisadvantagedPersonBuilder {
 
     public static DisadvantagedPerson toEntityWithId(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         Account accountDisadvantagePerson = new Account(disadvantagedPersonDTO.getUsername(), disadvantagedPersonDTO.getPassword(), disadvantagedPersonDTO.getRole());
-        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(), disadvantagedPersonDTO.getLocation(), disadvantagedPersonDTO.getPhoneNumber(), accountDisadvantagePerson);
+        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(), disadvantagedPersonDTO.getLocation(), disadvantagedPersonDTO.getPhoneNumber(), accountDisadvantagePerson, disadvantagedPersonDTO.getPriority());
     }
 
     public static DisadvantagedPerson toEntity(DisadvantagedPersonDTO disadvantagedPersonDTO) {
@@ -21,7 +21,8 @@ public class DisadvantagedPersonBuilder {
                 disadvantagedPersonDTO.getLastName(),
                 disadvantagedPersonDTO.getLocation(),
                 disadvantagedPersonDTO.getPhoneNumber(),
-                accountDisadvantagePerson);
+                accountDisadvantagePerson,
+                disadvantagedPersonDTO.getPriority());
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
