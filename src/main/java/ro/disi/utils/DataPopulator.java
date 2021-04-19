@@ -103,10 +103,12 @@ public class DataPopulator implements InitializingBean {
         }
 
         List<DisadvantagedPerson> disadvantagedPersonList = new ArrayList<>();
-        disadvantagedPersonList.add(new DisadvantagedPerson("Lorena", "Iacobescu", "Str. Carnaval, Nr. 102, Cluj-Napoca", "0742240445",
+        disadvantagedPersonList.add(new DisadvantagedPerson("Costel", "Ionescu", "Str. Munteanu, Nr. 102, Cluj-Napoca", "0752240445",
                 new Account("dis", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
-        disadvantagedPersonList.add(new DisadvantagedPerson("Mihai", "Ulici", "Str. Castanelor, Nr. 20, Cluj-Napoca", "0736244445",
+        disadvantagedPersonList.add(new DisadvantagedPerson("Stefan", "Marinescu", "Str. Florilor, Nr. 20, Cluj-Napoca", "0786244445",
                 new Account("dis2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Constanta", "Pop", "Str. Castanelor, Nr. 44, Cluj-Napoca", "0736144445",
+                new Account("dis3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
 
         for (DisadvantagedPerson disadvantagedPerson: disadvantagedPersonList) {
             disadvantagedPersonRepository.save(disadvantagedPerson);
@@ -157,7 +159,7 @@ public class DataPopulator implements InitializingBean {
         
         List<Restaurant> restaurantList = new ArrayList<>();
         restaurantList.add(new Restaurant("Floarea Soarelui", "Str. Primaverii, Nr. 12, Cluj-Napoca", menus1));
-        restaurantList.add(new Restaurant("Gasca de dupa Damb", "Str. Verii, Nr. 4, Cluj-Napoca", menus2));
+        restaurantList.add(new Restaurant("Eating Sunshine", "Str. Verii, Nr. 4, Cluj-Napoca", menus2));
         restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, Nr. 123, Cluj-Napoca", new HashSet<>()));
 
         for (Restaurant restaurant: restaurantList) {
@@ -200,7 +202,7 @@ public class DataPopulator implements InitializingBean {
 
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item("Pasta Carbonara", "The classical Italian taste", PASTA, 20.5));
-        itemList.add(new Item("Tripe Soup", "The classical italian taste", CIORBA_BURTA, 14.5));
+        itemList.add(new Item("Tripe Soup", "The classical Romanian taste", CIORBA_BURTA, 14.5));
         itemList.add(new Item("Wiener Schnitzel", "The classical austrian taste", SCHNITZEL, 18.99));
 
         for (Item item: itemList) {
