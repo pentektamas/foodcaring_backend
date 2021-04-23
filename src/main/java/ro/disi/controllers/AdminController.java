@@ -53,7 +53,6 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/responsible/update/{id}")
     public ResponseEntity<UUID> updateRestaurantResponsible(@PathVariable("id") UUID responsibleID, @RequestBody RestaurantResponsibleDTO restaurantResponsibleDTO) {
-        restaurantResponsibleDTO.setPassword(bCryptPasswordEncoder.encode(restaurantResponsibleDTO.getPassword()));
         Restaurant restaurant = restaurantService.getRestaurantByName(restaurantResponsibleDTO.getRestaurantName());
         UUID updatedResponsibleID = restaurantResponsibleService.updateRestaurantResponsible(responsibleID, RestaurantResponsibleBuilder.toRestaurantResponsible(restaurantResponsibleDTO, restaurant));
         return new ResponseEntity<>(updatedResponsibleID, HttpStatus.OK);

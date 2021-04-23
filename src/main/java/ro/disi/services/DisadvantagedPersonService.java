@@ -48,13 +48,13 @@ public class DisadvantagedPersonService {
 
     public DisadvantagedPersonDTO updateDisadvantagedPerson(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         DisadvantagedPerson disadvantagedPerson = DisadvantagedPersonBuilder.toEntityWithId(disadvantagedPersonDTO);
-        String password = bCryptPasswordEncoder.encode(disadvantagedPerson.getAccount().getPassword());
-        disadvantagedPerson.getAccount().setPassword(password);
         Optional<DisadvantagedPerson> itemOptional = disadvantagedPersonRepository.findById(disadvantagedPerson.getId());
         if (!itemOptional.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", disadvantagedPerson.getId());
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with id: " + disadvantagedPerson.getId());
         }
+        String existingPassword = itemOptional.get().getAccount().getPassword();
+        disadvantagedPerson.getAccount().setPassword(existingPassword);
         DisadvantagedPerson updatedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         LOGGER.debug("Disadvantaged person with id {} was updated in db", disadvantagedPerson.getId());
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(disadvantagedPerson);
