@@ -107,4 +107,9 @@ public class DisadvantagedPersonService {
         disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithPriority(disadvantagedPerson);
     }
+
+    public List<DisadvantagedPersonDTO> getUnHelpedDisadvantagedPersons(int nrPersons) {
+        List<DisadvantagedPersonDTO> sortedDisadvantagedPersons = getSortedDisadvantagedPersons();
+        return sortedDisadvantagedPersons.stream().limit(nrPersons).collect(Collectors.toList());
+    }
 }
