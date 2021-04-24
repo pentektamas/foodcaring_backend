@@ -73,4 +73,11 @@ public class DisadvantagedPersonController {
         DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.updatePriorityOfDisadvantagedPerson(id, priority);
         return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/unhelped/{nrPersons}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE','ROLE_DONOR')")
+    public ResponseEntity<List<DisadvantagedPersonDTO>> getUnHelpedDisadvantagedPersons(@PathVariable("nrPersons") int nrPersons) {
+        List<DisadvantagedPersonDTO> disadvantagedPersonDTOs = disadvantagedPersonService.getUnHelpedDisadvantagedPersons(nrPersons);
+        return new ResponseEntity<>(disadvantagedPersonDTOs, HttpStatus.OK);
+    }
 }
