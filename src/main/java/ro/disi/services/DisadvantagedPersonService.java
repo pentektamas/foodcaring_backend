@@ -9,6 +9,7 @@ import ro.disi.dtos.DisadvantagedPersonDTO;
 import ro.disi.dtos.builders.DisadvantagedPersonBuilder;
 import org.slf4j.LoggerFactory;
 import ro.disi.entities.DisadvantagedPerson;
+import ro.disi.entities.RestaurantResponsible;
 import ro.disi.repositories.AccountRepository;
 import ro.disi.repositories.DisadvantagedPersonRepository;
 
@@ -55,6 +56,7 @@ public class DisadvantagedPersonService {
         }
         String existingPassword = itemOptional.get().getAccount().getPassword();
         disadvantagedPerson.getAccount().setPassword(existingPassword);
+        disadvantagedPerson.setAllergies(disadvantagedPersonDTO.getAllergies());
         DisadvantagedPerson updatedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         LOGGER.debug("Disadvantaged person with id {} was updated in db", disadvantagedPerson.getId());
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(disadvantagedPerson);
@@ -111,5 +113,11 @@ public class DisadvantagedPersonService {
     public List<DisadvantagedPersonDTO> getUnHelpedDisadvantagedPersons(int nrPersons) {
         List<DisadvantagedPersonDTO> sortedDisadvantagedPersons = getSortedDisadvantagedPersons();
         return sortedDisadvantagedPersons.stream().limit(nrPersons).collect(Collectors.toList());
+    }
+
+    public DisadvantagedPersonDTO findDisadvantagedPersonByUsername(String username) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        optionalDisadvantagedPerson.orElseThrow(() -> new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with username " + username));
+        return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(optionalDisadvantagedPerson.get());
     }
 }

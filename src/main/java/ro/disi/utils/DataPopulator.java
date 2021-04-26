@@ -104,11 +104,11 @@ public class DataPopulator implements InitializingBean {
 
         List<DisadvantagedPerson> disadvantagedPersonList = new ArrayList<>();
         disadvantagedPersonList.add(new DisadvantagedPerson("Costel", "Ionescu", "Str. Munteanu, Nr. 102, Cluj-Napoca", "0752240445",
-                new Account("dis", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
+                new Account("dis", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 0, "peanuts; chocolate"));
         disadvantagedPersonList.add(new DisadvantagedPerson("Stefan", "Marinescu", "Str. Florilor, Nr. 20, Cluj-Napoca", "0786244445",
-                new Account("dis2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
+                new Account("dis2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 2, "peanuts; strawberries; eggs; milk"));
         disadvantagedPersonList.add(new DisadvantagedPerson("Constanta", "Pop", "Str. Castanelor, Nr. 44, Cluj-Napoca", "0736144445",
-                new Account("dis3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
+                new Account("dis3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 1, "soy; bananas; tuna; salami; blueberries"));
 
         for (DisadvantagedPerson disadvantagedPerson: disadvantagedPersonList) {
             disadvantagedPersonRepository.save(disadvantagedPerson);

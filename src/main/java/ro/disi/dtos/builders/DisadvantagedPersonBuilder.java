@@ -11,7 +11,7 @@ public class DisadvantagedPersonBuilder {
 
     public static DisadvantagedPerson toEntityWithId(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         Account accountDisadvantagePerson = new Account(disadvantagedPersonDTO.getUsername(), disadvantagedPersonDTO.getPassword(), disadvantagedPersonDTO.getRole());
-        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(), disadvantagedPersonDTO.getLocation(), disadvantagedPersonDTO.getPhoneNumber(), accountDisadvantagePerson, disadvantagedPersonDTO.getPriority());
+        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(), disadvantagedPersonDTO.getLocation(), disadvantagedPersonDTO.getPhoneNumber(), accountDisadvantagePerson, disadvantagedPersonDTO.getPriority(), disadvantagedPersonDTO.getAllergies());
     }
 
     public static DisadvantagedPerson toEntity(DisadvantagedPersonDTO disadvantagedPersonDTO) {
@@ -22,15 +22,15 @@ public class DisadvantagedPersonBuilder {
                 disadvantagedPersonDTO.getLocation(),
                 disadvantagedPersonDTO.getPhoneNumber(),
                 accountDisadvantagePerson,
-                disadvantagedPersonDTO.getPriority());
+                disadvantagedPersonDTO.getPriority(), disadvantagedPersonDTO.getAllergies());
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole());
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getAllergies());
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDtoWithPriority(DisadvantagedPerson disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getPriority());
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getPriority(), disadvantagedPerson.getAllergies());
     }
 
 }
