@@ -32,7 +32,7 @@ public class DisadvantagedPersonController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON')")
     public ResponseEntity<DisadvantagedPersonDTO> updateDisadvantagedPerson(@Valid @RequestBody DisadvantagedPersonDTO disadvantagedPersonDTO) {
         DisadvantagedPersonDTO dto = disadvantagedPersonService.updateDisadvantagedPerson(disadvantagedPersonDTO);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -50,7 +50,14 @@ public class DisadvantagedPersonController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<DisadvantagedPersonDTO> getDisadvantagedPerson(@PathVariable("id") UUID id) {
         DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.findDisadvantagedPersonById(id);
-        return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/username/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<DisadvantagedPersonDTO> getDisadvantagedPerson(@PathVariable("username") String username) {
+        DisadvantagedPersonDTO disadvantagedPersonDTO = disadvantagedPersonService.findDisadvantagedPersonByUsername(username);
+        return new ResponseEntity<>(disadvantagedPersonDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -10,4 +10,5 @@ import java.util.UUID;
 @Transactional
 public interface DisadvantagedPersonRepository extends JpaRepository<DisadvantagedPerson, UUID> {
 
+    Optional<DisadvantagedPerson> findByAccount_Username(String username);
 }
