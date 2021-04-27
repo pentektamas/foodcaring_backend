@@ -5,11 +5,13 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Menu implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +29,7 @@ public class Menu implements Serializable {
             name = "menu_item",
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private List<Item> itemList;
+    private List<Item> itemList = new ArrayList<>();
 
     @ManyToOne()
     @JoinColumn(name="restaurant_id", insertable = false, updatable = false)
