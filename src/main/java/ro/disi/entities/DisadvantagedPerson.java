@@ -1,8 +1,8 @@
 package ro.disi.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,27 +14,35 @@ public class DisadvantagedPerson extends Person implements Serializable {
     private boolean helped;
     @Column(nullable = false)
     private int priority;
-
     @Column
     private String allergies;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "disadvantaged_person_wishlist",
+            joinColumns = @JoinColumn(name = "wishlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private Set<Menu> wishList;
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, int priority, String allergies) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, int priority, String allergies, Set<Menu> wishList) {
         super(firstName, lastName, location, phoneNumber, account);
         this.helped = helped;
         this.priority = priority;
         this.allergies = allergies;
+        this.wishList = wishList;
     }
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, String allergies) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, String allergies, Set<Menu> wishList) {
         super(firstName, lastName, location, phoneNumber, account);
         this.helped = helped;
         this.allergies = allergies;
+        this.wishList = wishList;
     }
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList) {
         super(firstName, lastName, location, phoneNumber, account);
         this.priority = priority;
         this.allergies = allergies;
+        this.wishList = wishList;
     }
 
     public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account) {
@@ -46,10 +54,11 @@ public class DisadvantagedPerson extends Person implements Serializable {
         super(id, firstName, lastName, location, phoneNumber, account);
     }
 
-    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies) {
+    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList) {
         super(id, firstName, lastName, location, phoneNumber, account);
         this.priority = priority;
         this.allergies = allergies;
+        this.wishList = wishList;
     }
 
     public DisadvantagedPerson() {
@@ -78,5 +87,13 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     public void setAllergies(String allergies) {
         this.allergies = allergies;
+    }
+
+    public Set<Menu> getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(Set<Menu> wishList) {
+        this.wishList = wishList;
     }
 }
