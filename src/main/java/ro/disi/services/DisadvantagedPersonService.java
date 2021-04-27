@@ -6,10 +6,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.DisadvantagedPersonDTO;
+import ro.disi.dtos.MenuDTO;
 import ro.disi.dtos.builders.DisadvantagedPersonBuilder;
 import org.slf4j.LoggerFactory;
+import ro.disi.dtos.builders.MenuBuilder;
 import ro.disi.entities.DisadvantagedPerson;
-import ro.disi.entities.RestaurantResponsible;
+import ro.disi.entities.Menu;
 import ro.disi.repositories.AccountRepository;
 import ro.disi.repositories.DisadvantagedPersonRepository;
 
@@ -119,5 +121,71 @@ public class DisadvantagedPersonService {
         Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
         optionalDisadvantagedPerson.orElseThrow(() -> new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with username " + username));
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(optionalDisadvantagedPerson.get());
+    }
+
+    public Set<MenuDTO> getWishListByUsername(String username) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        if (!optionalDisadvantagedPerson.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
+        }
+        return optionalDisadvantagedPerson.get().getWishList().stream()
+                .map(MenuBuilder::toMenuDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<MenuDTO> addWishListForDisadvantagedPersonByUsername(String username, Set<MenuDTO> wishListDTO) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        if (!optionalDisadvantagedPerson.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
+        }
+        Set<Menu> wishList = wishListDTO.stream().map(MenuBuilder::toEntityWithId).collect(Collectors.toSet());
+        DisadvantagedPerson disadvantagedPerson = optionalDisadvantagedPerson.get();
+        disadvantagedPerson.setWishList(wishList);
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
+        return disadvantagedPerson.getWishList().stream()
+                .map(MenuBuilder::toMenuDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<MenuDTO> appendMenuToWishListForDisadvantagedPersonByUsername(String username, MenuDTO wishListMenuDTO) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        if (!optionalDisadvantagedPerson.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
+        }
+        DisadvantagedPerson disadvantagedPerson = optionalDisadvantagedPerson.get();
+        disadvantagedPerson.getWishList().add(MenuBuilder.toEntityWithId(wishListMenuDTO));
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
+        return disadvantagedPerson.getWishList().stream()
+                .map(MenuBuilder::toMenuDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<MenuDTO> deleteMenuFromWishListByDisadvantagedPersonUsername(String username, MenuDTO wishListMenuDTO) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        if (!optionalDisadvantagedPerson.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
+        }
+        DisadvantagedPerson disadvantagedPerson = optionalDisadvantagedPerson.get();
+        disadvantagedPerson.getWishList().remove(MenuBuilder.toEntityWithId(wishListMenuDTO));
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
+        return disadvantagedPerson.getWishList().stream()
+                .map(MenuBuilder::toMenuDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public UUID deleteWishListByDisadvantagedPersonUsername(String username) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        if (!optionalDisadvantagedPerson.isPresent()) {
+            LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
+            throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
+        }
+        DisadvantagedPerson disadvantagedPerson = optionalDisadvantagedPerson.get();
+        disadvantagedPerson.setWishList(new HashSet<>());
+        disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
+        return disadvantagedPerson.getId();
     }
 }

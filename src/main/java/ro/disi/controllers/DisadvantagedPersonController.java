@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.DisadvantagedPersonDTO;
+import ro.disi.dtos.MenuDTO;
 import ro.disi.services.DisadvantagedPersonService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -86,5 +88,40 @@ public class DisadvantagedPersonController {
     public ResponseEntity<List<DisadvantagedPersonDTO>> getUnHelpedDisadvantagedPersons(@PathVariable("nrPersons") int nrPersons) {
         List<DisadvantagedPersonDTO> disadvantagedPersonDTOs = disadvantagedPersonService.getUnHelpedDisadvantagedPersons(nrPersons);
         return new ResponseEntity<>(disadvantagedPersonDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/wishlist/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<Set<MenuDTO>> getWishList(@PathVariable("username") String username) {
+        Set<MenuDTO> wishList = disadvantagedPersonService.getWishListByUsername(username);
+        return new ResponseEntity<>(wishList, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/wishlist/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<Set<MenuDTO>> addWishList(@PathVariable("username") String username, @Valid @RequestBody Set<MenuDTO> wishListDTO) {
+        Set<MenuDTO> wishList = disadvantagedPersonService.addWishListForDisadvantagedPersonByUsername(username, wishListDTO);
+        return new ResponseEntity<>(wishList, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/wishlist/append/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<Set<MenuDTO>> appendMenuToWishList(@PathVariable("username") String username, @Valid @RequestBody MenuDTO wishListMenu) {
+        Set<MenuDTO> wishList = disadvantagedPersonService.appendMenuToWishListForDisadvantagedPersonByUsername(username, wishListMenu);
+        return new ResponseEntity<>(wishList, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/wishlist/remove/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<Set<MenuDTO>> deleteMenuFromWishList(@PathVariable("username") String username, @Valid @RequestBody MenuDTO wishListMenu) {
+        Set<MenuDTO> wishList = disadvantagedPersonService.deleteMenuFromWishListByDisadvantagedPersonUsername(username, wishListMenu);
+        return new ResponseEntity<>(wishList, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/wishlist/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<UUID> deleteWishList(@PathVariable("username") String username) {
+        UUID disadvantagedPersonId = disadvantagedPersonService.deleteWishListByDisadvantagedPersonUsername(username);
+        return new ResponseEntity<>(disadvantagedPersonId, HttpStatus.OK);
     }
 }
