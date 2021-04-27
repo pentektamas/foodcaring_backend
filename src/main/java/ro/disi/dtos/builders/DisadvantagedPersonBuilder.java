@@ -3,6 +3,8 @@ package ro.disi.dtos.builders;
 import ro.disi.dtos.*;
 import ro.disi.entities.*;
 
+import java.util.stream.Collectors;
+
 public class DisadvantagedPersonBuilder {
 
 
@@ -11,7 +13,16 @@ public class DisadvantagedPersonBuilder {
 
     public static DisadvantagedPerson toEntityWithId(DisadvantagedPersonDTO disadvantagedPersonDTO) {
         Account accountDisadvantagePerson = new Account(disadvantagedPersonDTO.getUsername(), disadvantagedPersonDTO.getPassword(), disadvantagedPersonDTO.getRole());
-        return new DisadvantagedPerson(disadvantagedPersonDTO.getId(), disadvantagedPersonDTO.getFirstName(), disadvantagedPersonDTO.getLastName(), disadvantagedPersonDTO.getLocation(), disadvantagedPersonDTO.getPhoneNumber(), accountDisadvantagePerson, disadvantagedPersonDTO.getPriority(), disadvantagedPersonDTO.getAllergies());
+        return new DisadvantagedPerson(
+                disadvantagedPersonDTO.getId(),
+                disadvantagedPersonDTO.getFirstName(),
+                disadvantagedPersonDTO.getLastName(),
+                disadvantagedPersonDTO.getLocation(),
+                disadvantagedPersonDTO.getPhoneNumber(),
+                accountDisadvantagePerson,
+                disadvantagedPersonDTO.getPriority(),
+                disadvantagedPersonDTO.getAllergies(),
+                disadvantagedPersonDTO.getWishList().stream().map(MenuBuilder::toEntityWithId).collect(Collectors.toSet()));
     }
 
     public static DisadvantagedPerson toEntity(DisadvantagedPersonDTO disadvantagedPersonDTO) {
@@ -22,15 +33,34 @@ public class DisadvantagedPersonBuilder {
                 disadvantagedPersonDTO.getLocation(),
                 disadvantagedPersonDTO.getPhoneNumber(),
                 accountDisadvantagePerson,
-                disadvantagedPersonDTO.getPriority(), disadvantagedPersonDTO.getAllergies());
+                disadvantagedPersonDTO.getPriority(), disadvantagedPersonDTO.getAllergies(),
+                disadvantagedPersonDTO.getWishList().stream().map(MenuBuilder::toEntityWithId).collect(Collectors.toSet()));
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDTO(DisadvantagedPerson disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getAllergies());
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(),
+                disadvantagedPerson.getFirstName(),
+                disadvantagedPerson.getLastName(),
+                disadvantagedPerson.getLocation(),
+                disadvantagedPerson.getPhoneNumber(),
+                disadvantagedPerson.getAccount().getUsername(),
+                disadvantagedPerson.getAccount().getPassword(),
+                disadvantagedPerson.getAccount().getRole(),
+                disadvantagedPerson.getAllergies(),
+                disadvantagedPerson.getWishList().stream().map(MenuBuilder::toMenuDTO).collect(Collectors.toSet()));
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDtoWithPriority(DisadvantagedPerson disadvantagedPerson) {
-        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(), disadvantagedPerson.getFirstName(), disadvantagedPerson.getLastName(), disadvantagedPerson.getLocation(), disadvantagedPerson.getPhoneNumber(), disadvantagedPerson.getAccount().getUsername(), disadvantagedPerson.getAccount().getPassword(), disadvantagedPerson.getAccount().getRole(), disadvantagedPerson.getPriority(), disadvantagedPerson.getAllergies());
+        return new DisadvantagedPersonDTO(disadvantagedPerson.getId(),
+                disadvantagedPerson.getFirstName(),
+                disadvantagedPerson.getLastName(),
+                disadvantagedPerson.getLocation(),
+                disadvantagedPerson.getPhoneNumber(),
+                disadvantagedPerson.getAccount().getUsername(),
+                disadvantagedPerson.getAccount().getPassword(),
+                disadvantagedPerson.getAccount().getRole(),
+                disadvantagedPerson.getPriority(),
+                disadvantagedPerson.getAllergies(),
+                disadvantagedPerson.getWishList().stream().map(MenuBuilder::toMenuDTO).collect(Collectors.toSet()));
     }
-
 }
