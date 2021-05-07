@@ -47,14 +47,14 @@ public class DonationController {
 
     @PutMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<DonationDTO> updateDonation(DonationDTO donationDTO) {
+    public ResponseEntity<DonationDTO> updateDonation(@Valid @RequestBody DonationDTO donationDTO) {
         DonationDTO updatedDonationDTO = donationService.updateDonation(donationDTO);
         return new ResponseEntity<>(updatedDonationDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
-    public ResponseEntity<UUID> deleteDonation(UUID id) {
+    public ResponseEntity<UUID> deleteDonation(@PathVariable UUID id) {
         UUID uuid = donationService.deleteDonation(id);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }

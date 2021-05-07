@@ -34,24 +34,24 @@ public class DonationBuilder {
 
     public static Donation toEntity(DonationDTO donationDTO) {
         List<DisadvantagedPerson> disadvantagedPeople = new ArrayList<>();
-        List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = donationDTO.getDisadvantagedPersonDTOS();
+        List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = donationDTO.getDisadvantagedPersons();
 
         if (disadvantagedPersonDTOS != null) {
             for (DisadvantagedPersonDTO disadvantagedPersonDTO : disadvantagedPersonDTOS) {
                 disadvantagedPeople.add(DisadvantagedPersonBuilder.toEntityWithId(disadvantagedPersonDTO));
             }
         }
-        System.out.println(donationDTO.getMenuDTO());
+        System.out.println(donationDTO.getMenu());
         return new Donation(
-                MenuBuilder.toEntityWithId(donationDTO.getMenuDTO()),
-                RestaurantBuilder.toEntityWithId(donationDTO.getRestaurantDTO()),
+                MenuBuilder.toEntityWithId(donationDTO.getMenu()),
+                RestaurantBuilder.toEntityWithId(donationDTO.getRestaurant()),
                 disadvantagedPeople
         );
     }
 
     public static Donation toEntityWithId(DonationDTO donationDTO) {
         List<DisadvantagedPerson> disadvantagedPeople = new ArrayList<>();
-        List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = donationDTO.getDisadvantagedPersonDTOS();
+        List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = donationDTO.getDisadvantagedPersons();
 
         if (disadvantagedPersonDTOS != null) {
             for (DisadvantagedPersonDTO disadvantagedPersonDTO : disadvantagedPersonDTOS) {
@@ -61,8 +61,8 @@ public class DonationBuilder {
 
         return new Donation(
                 donationDTO.getId(),
-                MenuBuilder.toEntityWithId(donationDTO.getMenuDTO()),
-                RestaurantBuilder.toEntityWithId(donationDTO.getRestaurantDTO()),
+                MenuBuilder.toEntityWithId(donationDTO.getMenu()),
+                RestaurantBuilder.toEntityWithId(donationDTO.getRestaurant()),
                 disadvantagedPeople
         );
     }

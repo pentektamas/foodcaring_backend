@@ -25,7 +25,7 @@ public class Donation implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<DisadvantagedPerson> disadvantagedPersonList;
 
     public Donation(UUID id, Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList) {

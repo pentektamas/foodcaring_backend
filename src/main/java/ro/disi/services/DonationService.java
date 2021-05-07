@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.DonationDTO;
+import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.builders.DonationBuilder;
 import ro.disi.entities.Donation;
 import ro.disi.entities.Menu;
-import ro.disi.entities.Restaurant;
 import ro.disi.repositories.DonationRepository;
 
 import java.util.List;
@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class DonationService {
     private final DonationRepository donationRepository;
+    private final RestaurantService restaurantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(DonationService.class);
 
 
     @Autowired
-    public DonationService(DonationRepository donationRepository) {
+    public DonationService(DonationRepository donationRepository, RestaurantService restaurantService) {
         this.donationRepository = donationRepository;
+        this.restaurantService = restaurantService;
     }
 
     public List<DonationDTO> findDonations() {

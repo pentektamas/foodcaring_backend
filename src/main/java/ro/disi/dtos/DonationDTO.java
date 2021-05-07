@@ -9,26 +9,28 @@ public class DonationDTO {
     private UUID id;
 
     @NotNull
-    private MenuDTO meniu;
+    private MenuDTO menu;
 
+    @NotNull
     private RestaurantDTO restaurant;
 
+    @NotNull
     private List<DisadvantagedPersonDTO> disadvantagedPersons;
 
-    public DonationDTO(UUID id, MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
-        this.id = id;
-        this.meniu = menuDTO;
-        this.restaurant = restaurantDTO;
-        this.disadvantagedPersons = disadvantagedPersonDTOS;
+    public DonationDTO() {
     }
 
     public DonationDTO(MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
-        this.meniu = menuDTO;
+        this.menu = menuDTO;
         this.restaurant = restaurantDTO;
         this.disadvantagedPersons = disadvantagedPersonDTOS;
     }
 
-    public DonationDTO() {
+    public DonationDTO(UUID id, MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
+        this.id = id;
+        this.menu = menuDTO;
+        this.restaurant = restaurantDTO;
+        this.disadvantagedPersons = disadvantagedPersonDTOS;
     }
 
     public UUID getId() {
@@ -39,35 +41,35 @@ public class DonationDTO {
         this.id = id;
     }
 
-    public MenuDTO getMenuDTO() {
-        return meniu;
+    public MenuDTO getMenu() {
+        return menu;
     }
 
-    public void setMenuDTO(MenuDTO menuDTO) {
-        this.meniu = menuDTO;
+    public void setMenu(MenuDTO menu) {
+        this.menu = menu;
     }
 
-    public RestaurantDTO getRestaurantDTO() {
+    public RestaurantDTO getRestaurant() {
         return restaurant;
     }
 
-    public void setRestaurantDTO(RestaurantDTO restaurantDTO) {
-        this.restaurant = restaurantDTO;
+    public void setRestaurant(RestaurantDTO restaurant) {
+        this.restaurant = restaurant;
     }
 
-    public List<DisadvantagedPersonDTO> getDisadvantagedPersonDTOS() {
+    public List<DisadvantagedPersonDTO> getDisadvantagedPersons() {
         return disadvantagedPersons;
     }
 
-    public void setDisadvantagedPersonDTOS(List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
-        this.disadvantagedPersons = disadvantagedPersonDTOS;
+    public void setDisadvantagedPersons(List<DisadvantagedPersonDTO> disadvantagedPersons) {
+        this.disadvantagedPersons = disadvantagedPersons;
     }
 
     @Override
     public String toString() {
         return "DonationDTO{" +
                 "id=" + id +
-                ", menu=" + meniu +
+                ", menu=" + menu +
                 ", restaurant=" + restaurant +
                 ", disadvantagedPersons=" + disadvantagedPersons +
                 '}';
