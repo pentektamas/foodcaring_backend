@@ -24,21 +24,21 @@ public class DonationController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<List<DonationDTO>> getDonations() {
         List<DonationDTO> donationDTOS = donationService.findDonations();
         return new ResponseEntity<>(donationDTOS, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<DonationDTO> getDonation(@PathVariable("id") UUID id) {
         DonationDTO donationDTO = donationService.findDonationById(id);
         return new ResponseEntity<DonationDTO>(donationDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<UUID> insertDonation(@Valid @RequestBody DonationDTO donationDTO) {
         System.out.println(donationDTO);
         UUID uuid = donationService.insertDonation(donationDTO);
@@ -46,14 +46,14 @@ public class DonationController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<DonationDTO> updateDonation(@Valid @RequestBody DonationDTO donationDTO) {
         DonationDTO updatedDonationDTO = donationService.updateDonation(donationDTO);
         return new ResponseEntity<>(updatedDonationDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<UUID> deleteDonation(@PathVariable UUID id) {
         UUID uuid = donationService.deleteDonation(id);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
