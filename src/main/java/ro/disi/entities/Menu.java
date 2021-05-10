@@ -24,7 +24,7 @@ public class Menu implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "menu_item",
             joinColumns = @JoinColumn(name = "menu_id"),
