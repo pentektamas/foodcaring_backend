@@ -41,7 +41,7 @@ public class DisadvantagedPersonController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<List<DisadvantagedPersonDTO>> getDisadvantagedPersons() {
         List<DisadvantagedPersonDTO> disadvantagedPersonDTOS = disadvantagedPersonService.findDisadvantagedPerson();
         return new ResponseEntity<>(disadvantagedPersonDTOS, HttpStatus.OK);
