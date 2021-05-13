@@ -30,7 +30,7 @@ public class MenuController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
     public ResponseEntity<Set<MenuDTO>> getMenus() {
         List<MenuDTO> menuDTOS = menuService.findMenus();
         List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenus();
