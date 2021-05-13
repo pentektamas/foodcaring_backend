@@ -24,7 +24,7 @@ public class MenuController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON')")
     public ResponseEntity<List<MenuDTO>> getMenus() {
         List<MenuDTO> menuDTOS = menuService.findMenus();
         return new ResponseEntity<>(menuDTOS, HttpStatus.OK);
