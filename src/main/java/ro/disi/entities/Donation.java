@@ -25,20 +25,25 @@ public class Donation implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Restaurant restaurant;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Donor donor;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<DisadvantagedPerson> disadvantagedPersonList;
 
-    public Donation(UUID id, Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList) {
+    public Donation(UUID id, Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList, Donor donor) {
         this.id = id;
         this.menu = menu;
         this.restaurant = restaurant;
         this.disadvantagedPersonList = disadvantagedPersonList;
+        this.donor = donor;
     }
 
-    public Donation(Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList) {
+    public Donation(Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList, Donor donor) {
         this.menu = menu;
         this.restaurant = restaurant;
         this.disadvantagedPersonList = disadvantagedPersonList;
+        this.donor = donor;
     }
 
     public Donation() {
@@ -78,5 +83,13 @@ public class Donation implements Serializable {
 
     public void setDisadvantagedPersonList(List<DisadvantagedPerson> disadvantagedPersonList) {
         this.disadvantagedPersonList = disadvantagedPersonList;
+    }
+
+    public Donor getDonor() {
+        return donor;
+    }
+
+    public void setDonor(Donor donor) {
+        this.donor = donor;
     }
 }

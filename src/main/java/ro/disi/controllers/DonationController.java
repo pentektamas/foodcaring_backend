@@ -30,6 +30,13 @@ public class DonationController {
         return new ResponseEntity<>(donationDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/disadvantaged/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_DISADVANTAGED_PERSON')")
+    public ResponseEntity<List<DonationDTO>> getDonationsForDisadvantaged(@PathVariable("username") String username) {
+        List<DonationDTO> donations = donationService.findDonationsByDisadvantagedPerson(username);
+        return new ResponseEntity<List<DonationDTO>>(donations, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
     public ResponseEntity<DonationDTO> getDonation(@PathVariable("id") UUID id) {

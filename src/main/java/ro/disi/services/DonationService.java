@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.DonationDTO;
-import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.builders.DonationBuilder;
+import ro.disi.entities.DisadvantagedPerson;
 import ro.disi.entities.Donation;
 import ro.disi.entities.Menu;
+
+import ro.disi.repositories.DisadvantagedPersonRepository;
 import ro.disi.repositories.DonationRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,13 +24,16 @@ import java.util.stream.Collectors;
 public class DonationService {
     private final DonationRepository donationRepository;
     private final RestaurantService restaurantService;
+    private final DisadvantagedPersonRepository disadvantagedPersonRepository;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DonationService.class);
 
 
     @Autowired
-    public DonationService(DonationRepository donationRepository, RestaurantService restaurantService) {
+    public DonationService(DonationRepository donationRepository, RestaurantService restaurantService, DisadvantagedPersonRepository disadvantagedPersonRepository) {
         this.donationRepository = donationRepository;
         this.restaurantService = restaurantService;
+        this.disadvantagedPersonRepository = disadvantagedPersonRepository;
     }
 
     public List<DonationDTO> findDonations() {
@@ -74,5 +80,12 @@ public class DonationService {
         Donation updatedDonation = donationRepository.save(donation);
         LOGGER.debug("Donation with id {} was updated in db", donation.getId());
         return DonationBuilder.toDonationDTO(updatedDonation);
+    }
+
+    public List<DonationDTO> findDonationsByDisadvantagedPerson(String username) {
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username+" does not exist"));
+        List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(optionalDisadvantagedPerson.get());
+        return donations.stream().map(DonationBuilder::toDonationDTO).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,7 @@
 package ro.disi.dtos;
 
+import ro.disi.entities.Donor;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -17,20 +19,25 @@ public class DonationDTO {
     @NotNull
     private List<DisadvantagedPersonDTO> disadvantagedPersons;
 
+    @NotNull
+    private DonorDTO donor;
+
     public DonationDTO() {
     }
 
-    public DonationDTO(MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
+    public DonationDTO(MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS, DonorDTO donorDTO) {
         this.menu = menuDTO;
         this.restaurant = restaurantDTO;
         this.disadvantagedPersons = disadvantagedPersonDTOS;
+        this.donor = donorDTO;
     }
 
-    public DonationDTO(UUID id, MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS) {
+    public DonationDTO(UUID id, MenuDTO menuDTO, RestaurantDTO restaurantDTO, List<DisadvantagedPersonDTO> disadvantagedPersonDTOS, DonorDTO donorDTO) {
         this.id = id;
         this.menu = menuDTO;
         this.restaurant = restaurantDTO;
         this.disadvantagedPersons = disadvantagedPersonDTOS;
+        this.donor = donorDTO;
     }
 
     public UUID getId() {
@@ -65,12 +72,20 @@ public class DonationDTO {
         this.disadvantagedPersons = disadvantagedPersons;
     }
 
+    public DonorDTO getDonor() {
+        return donor;
+    }
+
+    public void setDonor(DonorDTO donor) {
+        this.donor = donor;
+    }
+
     @Override
     public String toString() {
         return "DonationDTO{" +
                 "id=" + id +
                 ", menu=" + menu +
-                ", restaurant=" + restaurant +
+                ", donor=" + donor.getUsername() +
                 ", disadvantagedPersons=" + disadvantagedPersons +
                 '}';
     }
