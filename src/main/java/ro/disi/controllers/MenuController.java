@@ -31,9 +31,13 @@ public class MenuController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON')")
-    public ResponseEntity<List<MenuDTO>> getMenus() {
+    public ResponseEntity<Set<MenuDTO>> getMenus() {
         List<MenuDTO> menuDTOS = menuService.findMenus();
-        return new ResponseEntity<>(menuDTOS, HttpStatus.OK);
+        List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenus();
+        Set<MenuDTO> menuSet = new HashSet<>();
+        menuSet.addAll(menuDTOS);
+        menuSet.removeAll(weeklyMenuDTOS);
+        return new ResponseEntity<>(menuSet, HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")
