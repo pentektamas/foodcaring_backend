@@ -56,10 +56,8 @@ public class WeeklyMenuService {
         System.out.println(weeklyMenuDTO.getDiscountPercent());
         WeeklyMenu weeklyMenu;
         if(weeklyMenuDTO.getId()!=null){
-            System.out.println("withId");
             weeklyMenu = WeeklyMenuBuilder.toEntityWithId(weeklyMenuDTO);
         } else {
-            System.out.println("without Id");
             weeklyMenu = WeeklyMenuBuilder.toEntity(weeklyMenuDTO);
         }
         Restaurant restaurant = restaurantOptional.get();
