@@ -47,7 +47,6 @@ public class DonationController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DONOR')")
     public ResponseEntity<UUID> insertDonation(@Valid @RequestBody DonationDTO donationDTO) {
-        System.out.println(donationDTO);
         UUID uuid = donationService.insertDonation(donationDTO);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }

@@ -12,7 +12,7 @@ public class DisadvantagedPerson extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
-    private boolean helped;
+    private int nrOfHelps;
     @Column(nullable = false)
     private int priority;
     @Column
@@ -24,24 +24,17 @@ public class DisadvantagedPerson extends Person implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private Set<Menu> wishList;
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, int priority, String allergies, Set<Menu> wishList) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(firstName, lastName, location, phoneNumber, account);
-        this.helped = helped;
+        this.nrOfHelps = nrOfHelps;
         this.priority = priority;
         this.allergies = allergies;
         this.wishList = wishList;
     }
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, String allergies, Set<Menu> wishList) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(firstName, lastName, location, phoneNumber, account);
-        this.helped = helped;
-        this.allergies = allergies;
-        this.wishList = wishList;
-    }
-
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList) {
-        super(firstName, lastName, location, phoneNumber, account);
-        this.priority = priority;
+        this.nrOfHelps = nrOfHelps;
         this.allergies = allergies;
         this.wishList = wishList;
     }
@@ -55,23 +48,24 @@ public class DisadvantagedPerson extends Person implements Serializable {
         super(id, firstName, lastName, location, phoneNumber, account);
     }
 
-    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList) {
+    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(id, firstName, lastName, location, phoneNumber, account);
         this.priority = priority;
         this.allergies = allergies;
         this.wishList = wishList;
+        this.nrOfHelps = nrOfHelps;
     }
 
     public DisadvantagedPerson() {
     }
 
 
-    public boolean isHelped() {
-        return helped;
+    public int getNrOfHelps() {
+        return nrOfHelps;
     }
 
-    public void setHelped(boolean helped) {
-        this.helped = helped;
+    public void setNrOfHelps(int helped) {
+        this.nrOfHelps = helped;
     }
 
     public int getPriority() {
@@ -108,6 +102,6 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), isHelped(), getPriority(), getAllergies());
+        return Objects.hash(getId(), getNrOfHelps(), getPriority(), getAllergies());
     }
 }

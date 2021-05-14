@@ -1,10 +1,8 @@
 package ro.disi.dtos;
 
-import ro.disi.entities.Donor;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

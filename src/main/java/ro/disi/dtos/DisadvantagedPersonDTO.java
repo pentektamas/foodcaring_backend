@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class DisadvantagedPersonDTO extends PersonDTO {
 
-    private boolean helped;
+    private int nrOfHelps;
 
     private int priority;
 
@@ -19,23 +19,34 @@ public class DisadvantagedPersonDTO extends PersonDTO {
     public DisadvantagedPersonDTO() {
     }
 
-    public DisadvantagedPersonDTO(String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, String allergies, Set<MenuDTO> wishList) {
+    public DisadvantagedPersonDTO(String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, String allergies, Set<MenuDTO> wishList, int nrOfHelps) {
         super(firstName, lastName, location, phoneNumber, username, password, role);
         this.allergies = allergies;
         this.wishList = wishList;
+        this.nrOfHelps = nrOfHelps;
     }
 
-    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, String allergies, Set<MenuDTO> wishList) {
+    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, String allergies, Set<MenuDTO> wishList, int nrOfHelps) {
         super(id, firstName, lastName, location, phoneNumber, username, password, role);
         this.allergies = allergies;
         this.wishList = wishList;
+        this.nrOfHelps = nrOfHelps;
     }
 
-    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, int priority, String allergies, Set<MenuDTO> wishList) {
+    public DisadvantagedPersonDTO(UUID id, String firstName, String lastName, String location, String phoneNumber, String username, String password, Role role, int priority, String allergies, Set<MenuDTO> wishList, int nrOfHelps) {
         super(id, firstName, lastName, location, phoneNumber, username, password, role);
         this.priority = priority;
         this.allergies = allergies;
         this.wishList = wishList;
+        this.nrOfHelps = nrOfHelps;
+    }
+
+    public int getNrOfHelps() {
+        return nrOfHelps;
+    }
+
+    public void setNrOfHelps(int nrOfHelps) {
+        this.nrOfHelps = nrOfHelps;
     }
 
     public int getPriority() {
@@ -68,13 +79,13 @@ public class DisadvantagedPersonDTO extends PersonDTO {
         if (!(o instanceof DisadvantagedPersonDTO)) return false;
         if (!super.equals(o)) return false;
         DisadvantagedPersonDTO that = (DisadvantagedPersonDTO) o;
-        return helped == that.helped &&
+        return nrOfHelps == that.nrOfHelps &&
                 getPriority() == that.getPriority() &&
                 Objects.equals(getAllergies(), that.getAllergies());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), helped, getPriority(), getAllergies());
+        return Objects.hash(super.hashCode(), nrOfHelps, getPriority(), getAllergies());
     }
 }
