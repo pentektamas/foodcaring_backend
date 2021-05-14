@@ -2,6 +2,7 @@ package ro.disi.dtos;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MenuDTO {
@@ -50,5 +51,17 @@ public class MenuDTO {
 
     public void setItemList(List<ItemDTO> itemList) {
         this.itemList = itemList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        MenuDTO menuDTO = (MenuDTO) o;
+        return Objects.equals(id, menuDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
