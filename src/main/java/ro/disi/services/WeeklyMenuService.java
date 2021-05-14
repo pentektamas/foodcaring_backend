@@ -54,7 +54,12 @@ public class WeeklyMenuService {
             throw new ResourceNotFoundException(Restaurant.class.getSimpleName() + " with id: " + restaurantId);
         }
         System.out.println(weeklyMenuDTO.getDiscountPercent());
-        WeeklyMenu weeklyMenu = WeeklyMenuBuilder.toEntity(weeklyMenuDTO);
+        WeeklyMenu weeklyMenu;
+        if(weeklyMenuDTO.getId()!=null){
+            weeklyMenu = WeeklyMenuBuilder.toEntityWithId(weeklyMenuDTO);
+        } else {
+            weeklyMenu = WeeklyMenuBuilder.toEntity(weeklyMenuDTO);
+        }
         Restaurant restaurant = restaurantOptional.get();
         weeklyMenu.setRestaurant(restaurant);
         System.out.println(weeklyMenu.getDiscountPercent());
