@@ -1,46 +1,48 @@
 package ro.disi.dtos;
 
-import org.springframework.hateoas.RepresentationModel;
-import ro.disi.utils.Role;
-
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.UUID;
 
-public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
+public class DonorDTO {
 
     private UUID id;
+    
     @NotNull
     private String firstName;
+    
     @NotNull
     private String lastName;
+   
     @NotNull
     private String location;
+    
     @NotNull
     private String phoneNumber;
+    
     @NotNull
     private String username;
+    
     @NotNull
     private String password;
+    
     @NotNull
-    private Role role;
+    private Boolean hasDonated;
 
+    public DonorDTO() {
 
-    public PersonDTO() {
     }
 
-    public PersonDTO(@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Role role) {
+    public DonorDTO(@NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Boolean hasDonated) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.location = location;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.hasDonated = hasDonated;
     }
 
-    public PersonDTO(UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Role role) {
+    public DonorDTO(UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String location, @NotNull String phoneNumber, @NotNull String username, @NotNull String password, @NotNull Boolean hasDonated) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,11 +50,12 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.hasDonated = hasDonated;
     }
 
+
     public UUID getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(UUID id) {
@@ -107,32 +110,11 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Boolean getHasDonated() {
+        return hasDonated;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PersonDTO)) return false;
-        if (!super.equals(o)) return false;
-        PersonDTO personDTO = (PersonDTO) o;
-        return Objects.equals(getId(), personDTO.getId()) &&
-                Objects.equals(getFirstName(), personDTO.getFirstName()) &&
-                Objects.equals(getLastName(), personDTO.getLastName()) &&
-                Objects.equals(getLocation(), personDTO.getLocation()) &&
-                Objects.equals(getPhoneNumber(), personDTO.getPhoneNumber()) &&
-                Objects.equals(getUsername(), personDTO.getUsername()) &&
-                Objects.equals(getPassword(), personDTO.getPassword()) &&
-                getRole() == personDTO.getRole();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getFirstName(), getLastName(), getLocation(), getPhoneNumber(), getUsername(), getPassword(), getRole());
+    public void setHasDonated(Boolean hasDonated) {
+        this.hasDonated = hasDonated;
     }
 }

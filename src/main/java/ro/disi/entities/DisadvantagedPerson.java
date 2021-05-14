@@ -2,6 +2,7 @@ package ro.disi.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -95,5 +96,18 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     public void setWishList(Set<Menu> wishList) {
         this.wishList = wishList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DisadvantagedPerson)) return false;
+        DisadvantagedPerson that = (DisadvantagedPerson) o;
+        return this.getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), isHelped(), getPriority(), getAllergies());
     }
 }
