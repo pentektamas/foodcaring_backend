@@ -15,10 +15,7 @@ import ro.disi.repositories.DisadvantagedPersonRepository;
 import ro.disi.repositories.DonationRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +53,13 @@ public class DonationService {
 
     public UUID insertDonation(DonationDTO donationDTO) {
         Donation donation = DonationBuilder.toEntity(donationDTO);
+        Set<DisadvantagedPerson> disadvantagedPersons = donation.getDisadvantagedPersonList();
+        for (DisadvantagedPerson disadvantagedPerson : disadvantagedPersons) {
+            disadvantagedPerson.setNrOfHelps(disadvantagedPerson.getNrOfHelps() + 1);
+            disadvantagedPerson.setPriority(disadvantagedPerson.getPriority() > 0 ? disadvantagedPerson.getPriority() - 1 : 0);
+        }
+        disadvantagedPersonRepository.saveAll(disadvantagedPersons);
+        donation.setDisadvantagedPersonList(disadvantagedPersons);
         donation.setDate(new Date());
         donation = donationRepository.save(donation);
         LOGGER.debug("Donation with id {} was inserted in db", donation.getId());
@@ -86,17 +90,17 @@ public class DonationService {
 
     public List<DonationDTO> findDonationsByDisadvantagedPerson(String username) {
         Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
-        optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username+" does not exist"));
+        optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username + " does not exist"));
         List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(optionalDisadvantagedPerson.get());
         return donations.stream().map(DonationBuilder::toDonationDTO).collect(Collectors.toList());
     }
 
     public DonationDTO cancelDonation(String username, UUID donationId) {
         Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
-        optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username+" does not exist"));
+        optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username + " does not exist"));
 
         Optional<Donation> optionalDonation = donationRepository.findById(donationId);
-        optionalDonation.orElseThrow(() -> new EntityNotFoundException("The donation does not exist " + username+" does not exist"));
+        optionalDonation.orElseThrow(() -> new EntityNotFoundException("The donation does not exist " + username + " does not exist"));
         Donation donation = optionalDonation.get();
 
         donation.getDisadvantagedPersonList().remove(optionalDisadvantagedPerson.get());
