@@ -24,28 +24,28 @@ public class DonationController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
     public ResponseEntity<List<DonationDTO>> getDonations() {
         List<DonationDTO> donationDTOS = donationService.findDonations();
         return new ResponseEntity<>(donationDTOS, HttpStatus.OK);
     }
 
     @GetMapping(value = "/disadvantaged/{username}")
-    @PreAuthorize("hasAnyRole('ROLE_DISADVANTAGED_PERSON')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
     public ResponseEntity<List<DonationDTO>> getDonationsForDisadvantaged(@PathVariable("username") String username) {
         List<DonationDTO> donations = donationService.findDonationsByDisadvantagedPerson(username);
         return new ResponseEntity<List<DonationDTO>>(donations, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
     public ResponseEntity<DonationDTO> getDonation(@PathVariable("id") UUID id) {
         DonationDTO donationDTO = donationService.findDonationById(id);
         return new ResponseEntity<DonationDTO>(donationDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DONOR')")
     public ResponseEntity<UUID> insertDonation(@Valid @RequestBody DonationDTO donationDTO) {
         System.out.println(donationDTO);
         UUID uuid = donationService.insertDonation(donationDTO);
@@ -59,8 +59,15 @@ public class DonationController {
         return new ResponseEntity<>(updatedDonationDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/cancel/{username}/{donationId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
+    public ResponseEntity<DonationDTO> cancelDonation(@PathVariable("username") String username, @PathVariable("donationId") UUID donationId) {
+        DonationDTO updatedDonationDTO = donationService.cancelDonation(username, donationId);
+        return new ResponseEntity<>(updatedDonationDTO, HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DONOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DONOR')")
     public ResponseEntity<UUID> deleteDonation(@PathVariable UUID id) {
         UUID uuid = donationService.deleteDonation(id);
         return new ResponseEntity<>(uuid, HttpStatus.OK);

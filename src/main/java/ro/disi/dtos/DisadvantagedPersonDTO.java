@@ -2,6 +2,7 @@ package ro.disi.dtos;
 
 import ro.disi.utils.Role;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -59,5 +60,21 @@ public class DisadvantagedPersonDTO extends PersonDTO {
 
     public void setWishList(Set<MenuDTO> wishList) {
         this.wishList = wishList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DisadvantagedPersonDTO)) return false;
+        if (!super.equals(o)) return false;
+        DisadvantagedPersonDTO that = (DisadvantagedPersonDTO) o;
+        return helped == that.helped &&
+                getPriority() == that.getPriority() &&
+                Objects.equals(getAllergies(), that.getAllergies());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), helped, getPriority(), getAllergies());
     }
 }

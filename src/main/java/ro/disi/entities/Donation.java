@@ -5,8 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Donation implements Serializable {
@@ -28,22 +27,26 @@ public class Donation implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Donor donor;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<DisadvantagedPerson> disadvantagedPersonList;
+    private Date date;
 
-    public Donation(UUID id, Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList, Donor donor) {
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<DisadvantagedPerson> disadvantagedPersonList;
+
+    public Donation(UUID id, Menu menu, Restaurant restaurant, Set<DisadvantagedPerson> disadvantagedPersonList, Donor donor, Date date) {
         this.id = id;
         this.menu = menu;
         this.restaurant = restaurant;
         this.disadvantagedPersonList = disadvantagedPersonList;
         this.donor = donor;
+        this.date = date;
     }
 
-    public Donation(Menu menu, Restaurant restaurant, List<DisadvantagedPerson> disadvantagedPersonList, Donor donor) {
+    public Donation(Menu menu, Restaurant restaurant, Set<DisadvantagedPerson> disadvantagedPersonList, Donor donor, Date date) {
         this.menu = menu;
         this.restaurant = restaurant;
         this.disadvantagedPersonList = disadvantagedPersonList;
         this.donor = donor;
+        this.date = date;
     }
 
     public Donation() {
@@ -77,11 +80,11 @@ public class Donation implements Serializable {
         this.restaurant = restaurant;
     }
 
-    public List<DisadvantagedPerson> getDisadvantagedPersonList() {
+    public Set<DisadvantagedPerson> getDisadvantagedPersonList() {
         return disadvantagedPersonList;
     }
 
-    public void setDisadvantagedPersonList(List<DisadvantagedPerson> disadvantagedPersonList) {
+    public void setDisadvantagedPersonList(Set<DisadvantagedPerson> disadvantagedPersonList) {
         this.disadvantagedPersonList = disadvantagedPersonList;
     }
 
@@ -92,4 +95,14 @@ public class Donation implements Serializable {
     public void setDonor(Donor donor) {
         this.donor = donor;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
 }

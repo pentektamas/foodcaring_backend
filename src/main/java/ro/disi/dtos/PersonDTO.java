@@ -5,6 +5,7 @@ import ro.disi.utils.Role;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
@@ -112,5 +113,26 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PersonDTO)) return false;
+        if (!super.equals(o)) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(getId(), personDTO.getId()) &&
+                Objects.equals(getFirstName(), personDTO.getFirstName()) &&
+                Objects.equals(getLastName(), personDTO.getLastName()) &&
+                Objects.equals(getLocation(), personDTO.getLocation()) &&
+                Objects.equals(getPhoneNumber(), personDTO.getPhoneNumber()) &&
+                Objects.equals(getUsername(), personDTO.getUsername()) &&
+                Objects.equals(getPassword(), personDTO.getPassword()) &&
+                getRole() == personDTO.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getId(), getFirstName(), getLastName(), getLocation(), getPhoneNumber(), getUsername(), getPassword(), getRole());
     }
 }

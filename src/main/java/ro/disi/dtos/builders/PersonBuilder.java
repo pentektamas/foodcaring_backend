@@ -16,7 +16,7 @@ public class PersonBuilder {
 
     public static Donor toDonor(PersonDTO personDTO) {
         Account donorAccount = new Account(personDTO.getUsername(), personDTO.getPassword(), personDTO.getRole());
-        return new Donor(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getLocation(), personDTO.getPhoneNumber(), donorAccount);
+        return new Donor(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getLocation(), personDTO.getPhoneNumber(), donorAccount, false);
     }
 
     public static RestaurantResponsible toRestaurantResponsible(PersonDTO personDTO) {
