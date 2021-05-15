@@ -9,10 +9,12 @@ import ro.disi.dtos.DonationDTO;
 import ro.disi.dtos.builders.DonationBuilder;
 import ro.disi.entities.DisadvantagedPerson;
 import ro.disi.entities.Donation;
+import ro.disi.entities.Donor;
 import ro.disi.entities.Menu;
 
 import ro.disi.repositories.DisadvantagedPersonRepository;
 import ro.disi.repositories.DonationRepository;
+import ro.disi.repositories.DonorRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class DonationService {
     private final DonationRepository donationRepository;
+    private final DonorRepository donorRepository;
     private final RestaurantService restaurantService;
     private final DisadvantagedPersonRepository disadvantagedPersonRepository;
 
@@ -28,8 +31,9 @@ public class DonationService {
 
 
     @Autowired
-    public DonationService(DonationRepository donationRepository, RestaurantService restaurantService, DisadvantagedPersonRepository disadvantagedPersonRepository) {
+    public DonationService(DonationRepository donationRepository, DonorRepository donorRepository, RestaurantService restaurantService, DisadvantagedPersonRepository disadvantagedPersonRepository) {
         this.donationRepository = donationRepository;
+        this.donorRepository = donorRepository;
         this.restaurantService = restaurantService;
         this.disadvantagedPersonRepository = disadvantagedPersonRepository;
     }
@@ -92,6 +96,13 @@ public class DonationService {
         Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
         optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username + " does not exist"));
         List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(optionalDisadvantagedPerson.get());
+        return donations.stream().map(DonationBuilder::toDonationDTO).collect(Collectors.toList());
+    }
+
+    public List<DonationDTO> findDonationsByDonor(String username) {
+        Optional<Donor> donorOptional = donorRepository.findByAccountUsername(username);
+        donorOptional.orElseThrow(() -> new EntityNotFoundException("The donor with username " + username + " does not exist"));
+        List<Donation> donations = donationRepository.findAllByDonor(donorOptional.get());
         return donations.stream().map(DonationBuilder::toDonationDTO).collect(Collectors.toList());
     }
 

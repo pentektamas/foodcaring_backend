@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.MenuDTO;
+import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.WeeklyMenuDTO;
 import ro.disi.services.MenuService;
 import ro.disi.services.WeeklyMenuService;
@@ -40,11 +41,11 @@ public class MenuController {
         return new ResponseEntity<>(menuSet, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/all/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
-    public ResponseEntity<Set<MenuDTO>> getAllMenus(){
-        List<MenuDTO> menuDTOS = menuService.findMenus();
-        List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenus();
+    public ResponseEntity<Set<MenuDTO>> getAllMenus(@PathVariable("id") UUID restaurantId){
+        List<MenuDTO> menuDTOS = menuService.findMenusByRestaurant(restaurantId);
+        List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenusByRestaurant(restaurantId);
 
         Set<MenuDTO> allDTOS = new HashSet<>();
         allDTOS.addAll(weeklyMenuDTOS);

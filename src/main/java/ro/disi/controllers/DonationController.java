@@ -34,7 +34,14 @@ public class DonationController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DISADVANTAGED_PERSON')")
     public ResponseEntity<List<DonationDTO>> getDonationsForDisadvantaged(@PathVariable("username") String username) {
         List<DonationDTO> donations = donationService.findDonationsByDisadvantagedPerson(username);
-        return new ResponseEntity<List<DonationDTO>>(donations, HttpStatus.OK);
+        return new ResponseEntity<>(donations, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/donor/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DONOR')")
+    public ResponseEntity<List<DonationDTO>> getDonationsFromDonor(@PathVariable("username") String username) {
+        List<DonationDTO> donations = donationService.findDonationsByDonor(username);
+        return new ResponseEntity<>(donations, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

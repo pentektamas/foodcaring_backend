@@ -42,14 +42,6 @@ public class PersonController {
         return principal;
     }
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')") //in order to authorize one role
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DONOR')") //in order to authorize two or more roles
-    @RequestMapping(value = "/test")
-    public String test() {
-        return "DA";
-    }
-
-
     @PostMapping(value = "/signup")
     public ResponseEntity<String> signup(@RequestBody PersonDTO personDTO) {
         boolean result = false;

@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
+import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.WeeklyMenuDTO;
+import ro.disi.dtos.builders.RestaurantBuilder;
 import ro.disi.dtos.builders.WeeklyMenuBuilder;
 import ro.disi.entities.Restaurant;
 import ro.disi.entities.WeeklyMenu;
@@ -37,6 +39,19 @@ public class WeeklyMenuService {
                 .map(WeeklyMenuBuilder::toWeeklyMenuDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<WeeklyMenuDTO> findWeeklyMenusByRestaurant(UUID restaurantId) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        if (!restaurantOptional.isPresent()) {
+            LOGGER.error("Restaurant with id {} was not found in db", restaurantId);
+            throw new ResourceNotFoundException(WeeklyMenu.class.getSimpleName() + "with id" + restaurantId);
+        }
+        List<WeeklyMenu> weeklyMenus = weeklyMenuRepository.findAllByRestaurant(restaurantOptional.get());
+        return weeklyMenus.stream()
+                .map(WeeklyMenuBuilder::toWeeklyMenuDTO)
+                .collect(Collectors.toList());
+    }
+
 
     public WeeklyMenuDTO findWeeklyMenuById(UUID uuid) {
         Optional<WeeklyMenu> prosumerOptional = weeklyMenuRepository.findById(uuid);
