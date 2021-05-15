@@ -66,7 +66,7 @@ public class DisadvantagedPersonBuilder {
     }
 
     public static DisadvantagedPersonDTO toDisadvantagedPersonDtoWithPriority(DisadvantagedPerson disadvantagedPerson) {
-        DisadvantagedPersonDTO disadvantagedPersonDTO = new DisadvantagedPersonDTO(
+        DisadvantagedPersonDTO disadvantagedPersonDTO = new DisadvantagedPersonDTO(disadvantagedPerson.getId(),
                 disadvantagedPerson.getFirstName(),
                 disadvantagedPerson.getLastName(),
                 disadvantagedPerson.getLocation(),
@@ -74,6 +74,7 @@ public class DisadvantagedPersonBuilder {
                 disadvantagedPerson.getAccount().getUsername(),
                 disadvantagedPerson.getAccount().getPassword(),
                 disadvantagedPerson.getAccount().getRole(),
+                disadvantagedPerson.getPriority(),
                 disadvantagedPerson.getAllergies(),
                 new HashSet<>(),
                 disadvantagedPerson.getNrOfHelps());
