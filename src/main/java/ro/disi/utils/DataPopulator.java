@@ -239,10 +239,15 @@ public class DataPopulator implements InitializingBean {
         Menu menu = (Menu) Arrays.stream(restaurant.getMenus().stream().toArray()).findFirst().get();
         Donor donor = donorRepository.findAll().get(0);
         Set<DisadvantagedPerson> dis1 = new HashSet<>(disadvantagedPersonRepository.findAll());
-        Set<DisadvantagedPerson> dis2 = new HashSet<>(randomSubList(disadvantagedPersonRepository.findAll(), 2));
+
+        for (DisadvantagedPerson dis : dis1) {
+            dis.setNrOfHelps(dis.getNrOfHelps()+2);
+            disadvantagedPersonRepository.save(dis);
+        }
+
 
         donationList.add(new Donation(menu, restaurant, dis1, donor, new Date()));
-        donationList.add(new Donation(menu, restaurant, dis2, donor, new SimpleDateFormat("dd-MM-yyyy").parse("21-04-2021")));
+        donationList.add(new Donation(menu, restaurant, dis1, donor, new SimpleDateFormat("dd-MM-yyyy").parse("21-04-2021")));
 
         for (Donation donation : donationList) {
             donationRepository.save(donation);
