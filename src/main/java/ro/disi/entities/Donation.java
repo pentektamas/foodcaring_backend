@@ -29,8 +29,14 @@ public class Donation implements Serializable {
 
     private Date date;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<DisadvantagedPerson> disadvantagedPersonList;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "donation_disadvantaged_person_list",
+            joinColumns = @JoinColumn(name = "donation_id"),
+            inverseJoinColumns = @JoinColumn(name = "disadvantaged_person_list_id", referencedColumnName = "id", table = "disadvantaged_person"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    private Set<DisadvantagedPerson> disadvantagedPersonList = new HashSet<>();
 
     public Donation(UUID id, Menu menu, Restaurant restaurant, Set<DisadvantagedPerson> disadvantagedPersonList, Donor donor, Date date) {
         this.id = id;

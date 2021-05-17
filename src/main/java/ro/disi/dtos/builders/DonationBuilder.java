@@ -18,6 +18,7 @@ public class DonationBuilder {
     }
 
     public static DonationDTO toDonationDTO(Donation donation) {
+        if (donation == null) return null;
         Set<DisadvantagedPersonDTO> disadvantagedPersonDTOS = donation.getDisadvantagedPersonList().stream()
                 .map(DisadvantagedPersonBuilder::toDisadvantagedPersonDtoWithPriority).collect(Collectors.toSet());
 
@@ -31,6 +32,7 @@ public class DonationBuilder {
     }
 
     public static Donation toEntity(DonationDTO donationDTO) {
+        if (donationDTO == null) return null;
         Set<DisadvantagedPerson> disadvantagedPeople = donationDTO.getDisadvantagedPersons().stream()
                 .map(DisadvantagedPersonBuilder::toEntityWithId).collect(Collectors.toSet());
 
@@ -43,6 +45,7 @@ public class DonationBuilder {
     }
 
     public static Donation toEntityWithId(DonationDTO donationDTO) {
+        if (donationDTO == null) return null;
         Set<DisadvantagedPerson> disadvantagedPeople = donationDTO.getDisadvantagedPersons().stream()
                 .map(DisadvantagedPersonBuilder::toEntityWithId).collect(Collectors.toSet());
 
