@@ -115,7 +115,12 @@ public class DonationService {
         Donation donation = optionalDonation.get();
 
         donation.getDisadvantagedPersonList().remove(optionalDisadvantagedPerson.get());
-        donation = donationRepository.save(donation);
+        if (donation.getDisadvantagedPersonList().size() == 0) {
+            donationRepository.delete(donation);
+            donation = null;
+        } else {
+            donation = donationRepository.save(donation);
+        }
 
         return DonationBuilder.toDonationDTO(donation);
     }
@@ -124,7 +129,11 @@ public class DonationService {
         List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(disadvantagedPerson);
         for (Donation donation: donations) {
             donation.getDisadvantagedPersonList().remove(disadvantagedPerson);
-            donationRepository.save(donation);
+            if (donation.getDisadvantagedPersonList().size() == 0) {
+                donationRepository.delete(donation);
+            } else {
+                donationRepository.save(donation);
+            }
         }
     }
 }
