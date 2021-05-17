@@ -32,6 +32,13 @@ public class WeeklyMenuController {
         return new ResponseEntity<>(weeklyMenuDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/restaurant/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
+    public ResponseEntity<List<WeeklyMenuDTO>> getWeeklyMenusByRestaurant(@PathVariable("id") UUID id) {
+        List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenusByRestaurant(id);
+        return new ResponseEntity<>(weeklyMenuDTOS, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<WeeklyMenuDTO> getWeeklyMenu(@PathVariable("id") UUID id) {
