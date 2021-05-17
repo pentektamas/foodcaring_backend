@@ -54,6 +54,19 @@ public class MenuController {
         return new ResponseEntity<>(allDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/restaurant/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE', 'ROLE_DISADVANTAGED_PERSON', 'ROLE_DONOR')")
+    public ResponseEntity<Set<MenuDTO>> getAllMenusForRestaurant(@PathVariable("id") UUID restaurantId){
+        List<MenuDTO> menuDTOS = menuService.findMenusByRestaurant(restaurantId);
+        List<WeeklyMenuDTO> weeklyMenuDTOS = weeklyMenuService.findWeeklyMenusByRestaurant(restaurantId);
+
+        Set<MenuDTO> onlyMenuDTOS = new HashSet<>();
+        onlyMenuDTOS.addAll(menuDTOS);
+        onlyMenuDTOS.removeAll(weeklyMenuDTOS);
+
+        return new ResponseEntity<>(onlyMenuDTOS, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_RESTAURANT_RESPONSIBLE')")
     public ResponseEntity<MenuDTO> getMenu(@PathVariable("id") UUID id) {
