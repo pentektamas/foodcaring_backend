@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.MenuDTO;
+import ro.disi.dtos.RestaurantDTO;
 import ro.disi.dtos.builders.MenuBuilder;
+import ro.disi.dtos.builders.RestaurantBuilder;
 import ro.disi.entities.Menu;
 import ro.disi.entities.Restaurant;
 import ro.disi.repositories.MenuRepository;
@@ -34,6 +36,18 @@ public class MenuService {
 
     public List<MenuDTO> findMenus() {
         List<Menu> menus = menuRepository.findAll();
+        return menus.stream()
+                .map(MenuBuilder::toMenuDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<MenuDTO> findMenusByRestaurant(UUID restaurantId) {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        if (!restaurantOptional.isPresent()) {
+            LOGGER.error("Restaurant with id {} was not found in db", restaurantId);
+            throw new ResourceNotFoundException(Restaurant.class.getSimpleName() + "with id" + restaurantId);
+        }
+        List<Menu> menus = menuRepository.findAllByRestaurant(restaurantOptional.get());
         return menus.stream()
                 .map(MenuBuilder::toMenuDTO)
                 .collect(Collectors.toList());

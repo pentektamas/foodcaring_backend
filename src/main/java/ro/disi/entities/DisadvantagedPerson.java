@@ -1,8 +1,9 @@
 package ro.disi.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -11,24 +12,31 @@ public class DisadvantagedPerson extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
-    private boolean helped;
+    private int nrOfHelps;
     @Column(nullable = false)
     private int priority;
+    @Column
+    private String allergies;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "disadvantaged_person_wishlist",
+            joinColumns = @JoinColumn(name = "wishlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private Set<Menu> wishList;
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped, int priority) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(firstName, lastName, location, phoneNumber, account);
-        this.helped = helped;
+        this.nrOfHelps = nrOfHelps;
         this.priority = priority;
+        this.allergies = allergies;
+        this.wishList = wishList;
     }
 
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, boolean helped) {
+    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(firstName, lastName, location, phoneNumber, account);
-        this.helped = helped;
-    }
-
-    public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account, int priority) {
-        super(firstName, lastName, location, phoneNumber, account);
-        this.priority = priority;
+        this.nrOfHelps = nrOfHelps;
+        this.allergies = allergies;
+        this.wishList = wishList;
     }
 
     public DisadvantagedPerson(String firstName, String lastName, String location, String phoneNumber, Account account) {
@@ -40,21 +48,24 @@ public class DisadvantagedPerson extends Person implements Serializable {
         super(id, firstName, lastName, location, phoneNumber, account);
     }
 
-    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority) {
+    public DisadvantagedPerson(UUID id, String firstName, String lastName, String location, String phoneNumber, Account account, int priority, String allergies, Set<Menu> wishList, int nrOfHelps) {
         super(id, firstName, lastName, location, phoneNumber, account);
         this.priority = priority;
+        this.allergies = allergies;
+        this.wishList = wishList;
+        this.nrOfHelps = nrOfHelps;
     }
 
     public DisadvantagedPerson() {
     }
 
 
-    public boolean isHelped() {
-        return helped;
+    public int getNrOfHelps() {
+        return nrOfHelps;
     }
 
-    public void setHelped(boolean helped) {
-        this.helped = helped;
+    public void setNrOfHelps(int helped) {
+        this.nrOfHelps = helped;
     }
 
     public int getPriority() {
@@ -63,5 +74,34 @@ public class DisadvantagedPerson extends Person implements Serializable {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    public Set<Menu> getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(Set<Menu> wishList) {
+        this.wishList = wishList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DisadvantagedPerson)) return false;
+        DisadvantagedPerson that = (DisadvantagedPerson) o;
+        return this.getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNrOfHelps(), getPriority(), getAllergies());
     }
 }

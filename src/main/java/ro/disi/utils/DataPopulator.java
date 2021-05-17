@@ -11,6 +11,8 @@ import ro.disi.entities.*;
 import ro.disi.repositories.*;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ro.disi.utils.ItemImages.*;
@@ -20,30 +22,33 @@ public class DataPopulator implements InitializingBean {
 
     @Autowired
     AccountRepository accountRepository;
-    
+
     @Autowired
     AdminRepository adminRepository;
-    
+
     @Autowired
     RestaurantResponsibleRepository restaurantResponsibleRepository;
-    
+
     @Autowired
     DonorRepository donorRepository;
-    
+
     @Autowired
     DisadvantagedPersonRepository disadvantagedPersonRepository;
-    
+
     @Autowired
     RestaurantRepository restaurantRepository;
-    
+
     @Autowired
     MenuRepository menuRepository;
-    
+
     @Autowired
     ItemRepository itemRepository;
-    
+
     @Autowired
     AllergenRepository allergenRepository;
+
+    @Autowired
+    DonationRepository donationRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataPopulator.class);
 
@@ -53,26 +58,28 @@ public class DataPopulator implements InitializingBean {
 
         insertAdmins();
         insertDonors();
-        insertDisadvantagedPersons();
         insertRestaurantResponsibles();
+        insertDisadvantagedPersons();
 
         insertRestaurants();
         insertMenus();
         insertItems();
+
+        insertDonations();
     }
-    
+
     private void insertAdmins() {
         if (adminRepository.count() > 0) {
             return;
         }
-        
+
         List<Admin> adminList = new ArrayList<>();
-        adminList.add(new Admin("Ionel", "Popescu", "Str. Ciupercilor, Nr. 12, Cluj-Napoca", "0746240445", 
+        adminList.add(new Admin("Ionel", "Popescu", "Str. Ciupercilor, Nr. 12, Cluj-Napoca", "0746240445",
                 new Account("admin", getEncoder().encode("pass"), Role.ADMIN)));
         adminList.add(new Admin("Alexandra", "Stan", "Str. Liliacul, Nr. 17, Bucuresti", "0746244445",
                 new Account("admin2", getEncoder().encode("pass"), Role.ADMIN)));
-        
-        for (Admin admin: adminList) {
+
+        for (Admin admin : adminList) {
             adminRepository.save(admin);
         }
 
@@ -86,11 +93,11 @@ public class DataPopulator implements InitializingBean {
 
         List<Donor> donorList = new ArrayList<>();
         donorList.add(new Donor("Lorena", "Iacobescu", "Str. Carnaval, Nr. 102, Cluj-Napoca", "0742240445",
-                new Account("donor", getEncoder().encode("pass"), Role.DONOR)));
+                new Account("donor", getEncoder().encode("pass"), Role.DONOR), true));
         donorList.add(new Donor("Mihai", "Ulici", "Str. Castanelor, Nr. 20, Cluj-Napoca", "0736244445",
-                new Account("donor2", getEncoder().encode("pass"), Role.DONOR)));
+                new Account("donor2", getEncoder().encode("pass"), Role.DONOR), true));
 
-        for (Donor donor: donorList) {
+        for (Donor donor : donorList) {
             donorRepository.save(donor);
         }
 
@@ -102,13 +109,24 @@ public class DataPopulator implements InitializingBean {
             return;
         }
 
-        List<DisadvantagedPerson> disadvantagedPersonList = new ArrayList<>();
-        disadvantagedPersonList.add(new DisadvantagedPerson("Lorena", "Iacobescu", "Str. Carnaval, Nr. 102, Cluj-Napoca", "0742240445",
-                new Account("dis", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
-        disadvantagedPersonList.add(new DisadvantagedPerson("Mihai", "Ulici", "Str. Castanelor, Nr. 20, Cluj-Napoca", "0736244445",
-                new Account("dis2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON)));
+        List<Menu> menuList = menuRepository.findAll();
 
-        for (DisadvantagedPerson disadvantagedPerson: disadvantagedPersonList) {
+        Set<Menu> wishListMenus1 = new HashSet<>();
+        wishListMenus1.add(menuList.get(2));
+
+        Set<Menu> wishListMenus2 = new HashSet<>();
+        wishListMenus2.add(menuList.get(0));
+        wishListMenus2.add(menuList.get(1));
+
+        List<DisadvantagedPerson> disadvantagedPersonList = new ArrayList<>();
+        disadvantagedPersonList.add(new DisadvantagedPerson("Costel", "Ionescu", "Str. Munteanu, Nr. 102, Cluj-Napoca", "0752240445",
+                new Account("disa", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 0, "peanuts; chocolate", wishListMenus1, 0));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Stefan", "Marinescu", "Str. Florilor, Nr. 20, Cluj-Napoca", "0786244445",
+                new Account("disa2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 2, "peanuts; strawberries; eggs; milk", wishListMenus2, 0));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Constanta", "Pop", "Str. Castanelor, Nr. 44, Cluj-Napoca", "0736144445",
+                new Account("disa3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 1, "soy; bananas; tuna; salami; blueberries", new HashSet<>(), 0));
+
+        for (DisadvantagedPerson disadvantagedPerson : disadvantagedPersonList) {
             disadvantagedPersonRepository.save(disadvantagedPerson);
         }
 
@@ -132,13 +150,13 @@ public class DataPopulator implements InitializingBean {
         restaurantResponsibleList.add(new RestaurantResponsible("Veronica", "Micle", "Str. Plopilor, Nr. 2, Cluj-Napoca", "0738244445",
                 new Account("resp3", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE)));
 
-        for (RestaurantResponsible restaurantResponsible: restaurantResponsibleList) {
+        for (RestaurantResponsible restaurantResponsible : restaurantResponsibleList) {
             restaurantResponsibleRepository.save(restaurantResponsible);
         }
 
         LOGGER.info("RestaurantResponsible accounts were added by the populator!");
     }
-    
+
     private void insertRestaurants() {
         if (restaurantRepository.count() > 0) {
             return;
@@ -154,18 +172,18 @@ public class DataPopulator implements InitializingBean {
         Set<Menu> menus2 = new HashSet<>();
         menus2.add(menuList.get(1));
         menus2.add(menuList.get(2));
-        
+
         List<Restaurant> restaurantList = new ArrayList<>();
         restaurantList.add(new Restaurant("Floarea Soarelui", "Str. Primaverii, Nr. 12, Cluj-Napoca", menus1));
-        restaurantList.add(new Restaurant("Gasca de dupa Damb", "Str. Verii, Nr. 4, Cluj-Napoca", menus2));
+        restaurantList.add(new Restaurant("Eating Sunshine", "Str. Verii, Nr. 4, Cluj-Napoca", menus2));
         restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, Nr. 123, Cluj-Napoca", new HashSet<>()));
 
-        for (Restaurant restaurant: restaurantList) {
+        for (Restaurant restaurant : restaurantList) {
             restaurantRepository.save(restaurant);
         }
 
         LOGGER.info("Restaurants were added by the populator!");
-        
+
     }
 
     private void insertMenus() {
@@ -185,7 +203,7 @@ public class DataPopulator implements InitializingBean {
         menuList.add(new Menu("Meniu de Primavara", itemList2));
         menuList.add(new Menu("Meniu", itemList));
 
-        for (Menu menu: menuList) {
+        for (Menu menu : menuList) {
             menuRepository.save(menu);
         }
 
@@ -200,16 +218,43 @@ public class DataPopulator implements InitializingBean {
 
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item("Pasta Carbonara", "The classical Italian taste", PASTA, 20.5));
-        itemList.add(new Item("Tripe Soup", "The classical italian taste", CIORBA_BURTA, 14.5));
+        itemList.add(new Item("Tripe Soup", "The classical Romanian taste", CIORBA_BURTA, 14.5));
         itemList.add(new Item("Wiener Schnitzel", "The classical austrian taste", SCHNITZEL, 18.99));
 
-        for (Item item: itemList) {
+        for (Item item : itemList) {
             itemRepository.save(item);
         }
 
         LOGGER.info("Items were added by the populator!");
     }
-    
+
+    private void insertDonations() throws ParseException {
+        if (donationRepository.count() > 0) {
+            return;
+        }
+
+        List<Donation> donationList = new ArrayList<>();
+
+        Restaurant restaurant = restaurantRepository.findAll().get(0);
+        Menu menu = (Menu) Arrays.stream(restaurant.getMenus().stream().toArray()).findFirst().get();
+        Donor donor = donorRepository.findAll().get(0);
+        Set<DisadvantagedPerson> dis1 = new HashSet<>(disadvantagedPersonRepository.findAll());
+
+        for (DisadvantagedPerson dis : dis1) {
+            dis.setNrOfHelps(dis.getNrOfHelps()+2);
+            disadvantagedPersonRepository.save(dis);
+        }
+
+
+        donationList.add(new Donation(menu, restaurant, dis1, donor, new Date()));
+        donationList.add(new Donation(menu, restaurant, dis1, donor, new SimpleDateFormat("dd-MM-yyyy").parse("21-04-2021")));
+
+        for (Donation donation : donationList) {
+            donationRepository.save(donation);
+        }
+    }
+
+
     private PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
     }

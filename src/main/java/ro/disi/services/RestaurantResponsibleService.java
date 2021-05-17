@@ -48,12 +48,14 @@ public class RestaurantResponsibleService {
             throw new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + "with id: " + responsibleID);
         }
         RestaurantResponsible foundRestaurantResponsible = optionalRestaurantResponsible.get();
+        String existingPassword = foundRestaurantResponsible.getAccount().getPassword();
         foundRestaurantResponsible.setFirstName(restaurantResponsible.getFirstName());
         foundRestaurantResponsible.setLastName(restaurantResponsible.getLastName());
         foundRestaurantResponsible.setLocation(restaurantResponsible.getLocation());
         foundRestaurantResponsible.setPhoneNumber(restaurantResponsible.getPhoneNumber());
         foundRestaurantResponsible.setRestaurant(restaurantResponsible.getRestaurant());
         foundRestaurantResponsible.setAccount(restaurantResponsible.getAccount());
+        foundRestaurantResponsible.getAccount().setPassword(existingPassword);
         restaurantResponsibleRepository.save(foundRestaurantResponsible);
         return foundRestaurantResponsible.getId();
     }

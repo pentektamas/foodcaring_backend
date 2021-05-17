@@ -1,5 +1,6 @@
 package ro.disi.dtos.builders;
 
+import ro.disi.dtos.DisadvantagedPersonDTO;
 import ro.disi.dtos.RestaurantDTO;
 import ro.disi.entities.Restaurant;
 
