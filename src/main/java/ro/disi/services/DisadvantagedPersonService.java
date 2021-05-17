@@ -23,8 +23,16 @@ public class DisadvantagedPersonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuService.class);
     private final DisadvantagedPersonRepository disadvantagedPersonRepository;
     private final AccountRepository accountRepository;
+
+
+    @Autowired
+    private DonationService donationService;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private AccountRepository accountRespository;
 
     @Autowired
     public DisadvantagedPersonService(DisadvantagedPersonRepository disadvantagedPersonRepository, AccountRepository accountRepository) {
@@ -91,12 +99,15 @@ public class DisadvantagedPersonService {
     }
 
     public UUID deleteDisadvantagedPerson(UUID id) {
-        Optional<DisadvantagedPerson> menuOptional = disadvantagedPersonRepository.findById(id);
-        if (!menuOptional.isPresent()) {
+        Optional<DisadvantagedPerson> disaOptional = disadvantagedPersonRepository.findById(id);
+        if (!disaOptional.isPresent()) {
             LOGGER.error("DisadvantagedPerson with id {} was not found in db", id);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with id: " + id);
         }
+
+        donationService.cancelAllDonations(disaOptional.get());
         disadvantagedPersonRepository.deleteById(id);
+        accountRespository.deleteByUsername(disaOptional.get().getAccount().getUsername());
         return id;
     }
 

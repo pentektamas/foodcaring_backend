@@ -119,4 +119,12 @@ public class DonationService {
 
         return DonationBuilder.toDonationDTO(donation);
     }
+
+    public void cancelAllDonations(DisadvantagedPerson disadvantagedPerson) {
+        List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(disadvantagedPerson);
+        for (Donation donation: donations) {
+            donation.getDisadvantagedPersonList().remove(disadvantagedPerson);
+            donationRepository.save(donation);
+        }
+    }
 }
