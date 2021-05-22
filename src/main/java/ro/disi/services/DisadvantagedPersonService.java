@@ -118,7 +118,11 @@ public class DisadvantagedPersonService {
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with id" + disadvantagedPersonID);
         }
         DisadvantagedPerson disadvantagedPerson = disadvantagedPersonOptional.get();
-        disadvantagedPerson.setPriority(disadvantagedPerson.getPriority() + priority);
+        int newPriority = disadvantagedPerson.getPriority() + priority;
+        if (newPriority < 0) {
+            newPriority = 0;
+        }
+        disadvantagedPerson.setPriority(newPriority);
         disadvantagedPerson = disadvantagedPersonRepository.save(disadvantagedPerson);
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDtoWithPriority(disadvantagedPerson);
     }

@@ -74,9 +74,9 @@ public class DataPopulator implements InitializingBean {
         }
 
         List<Admin> adminList = new ArrayList<>();
-        adminList.add(new Admin("Ionel", "Popescu", "Str. Ciupercilor, Nr. 12, Cluj-Napoca", "0746240445",
+        adminList.add(new Admin("Ionel", "Popescu", "Str. Ciupercilor, No. 12, Cluj-Napoca", "0746240445",
                 new Account("admin", getEncoder().encode("pass"), Role.ADMIN)));
-        adminList.add(new Admin("Alexandra", "Stan", "Str. Liliacul, Nr. 17, Bucuresti", "0746244445",
+        adminList.add(new Admin("Alexandra", "Stan", "Str. Liliacul, No. 17, Bucuresti", "0746244445",
                 new Account("admin2", getEncoder().encode("pass"), Role.ADMIN)));
 
         for (Admin admin : adminList) {
@@ -92,9 +92,9 @@ public class DataPopulator implements InitializingBean {
         }
 
         List<Donor> donorList = new ArrayList<>();
-        donorList.add(new Donor("Lorena", "Iacobescu", "Str. Carnaval, Nr. 102, Cluj-Napoca", "0742240445",
+        donorList.add(new Donor("Lorena", "Iacobescu", "Str. Carnaval, No. 102, Cluj-Napoca", "0742240445",
                 new Account("donor", getEncoder().encode("pass"), Role.DONOR), true));
-        donorList.add(new Donor("Mihai", "Ulici", "Str. Castanelor, Nr. 20, Cluj-Napoca", "0736244445",
+        donorList.add(new Donor("Mihai", "Ulici", "Str. Castanelor, No. 20, Cluj-Napoca", "0736244445",
                 new Account("donor2", getEncoder().encode("pass"), Role.DONOR), true));
 
         for (Donor donor : donorList) {
@@ -119,12 +119,12 @@ public class DataPopulator implements InitializingBean {
         wishListMenus2.add(menuList.get(1));
 
         List<DisadvantagedPerson> disadvantagedPersonList = new ArrayList<>();
-        disadvantagedPersonList.add(new DisadvantagedPerson("Costel", "Ionescu", "Str. Munteanu, Nr. 102, Cluj-Napoca", "0752240445",
-                new Account("disa", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 0, "peanuts; chocolate", wishListMenus1, 0));
-        disadvantagedPersonList.add(new DisadvantagedPerson("Stefan", "Marinescu", "Str. Florilor, Nr. 20, Cluj-Napoca", "0786244445",
-                new Account("disa2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 2, "peanuts; strawberries; eggs; milk", wishListMenus2, 0));
-        disadvantagedPersonList.add(new DisadvantagedPerson("Constanta", "Pop", "Str. Castanelor, Nr. 44, Cluj-Napoca", "0736144445",
-                new Account("disa3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 1, "soy; bananas; tuna; salami; blueberries", new HashSet<>(), 0));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Costel", "Ionescu", "Str. Munteanu, No. 102, Cluj-Napoca", "0752240445",
+                new Account("disad", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 0, "peanuts; chocolate", wishListMenus1, 0));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Stefan", "Marinescu", "Str. Florilor, No. 20, Cluj-Napoca", "0786244445",
+                new Account("disad2", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 2, "peanuts; strawberries; eggs; milk", wishListMenus2, 0));
+        disadvantagedPersonList.add(new DisadvantagedPerson("Constanta", "Pop", "Str. Castanelor, No. 44, Cluj-Napoca", "0736144445",
+                new Account("disad3", getEncoder().encode("pass"), Role.DISADVANTAGED_PERSON), 1, "soy; bananas; tuna; salami; blueberries", new HashSet<>(), 0));
 
         for (DisadvantagedPerson disadvantagedPerson : disadvantagedPersonList) {
             disadvantagedPersonRepository.save(disadvantagedPerson);
@@ -143,12 +143,12 @@ public class DataPopulator implements InitializingBean {
         List<Restaurant> restaurantList = restaurantRepository.findAll();
 
         List<RestaurantResponsible> restaurantResponsibleList = new ArrayList<>();
-        restaurantResponsibleList.add(new RestaurantResponsible("Lorena", "Iacobescu", "Str. Carnaval, Nr. 102, Cluj-Napoca", "0742240445",
-                new Account("resp", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(0)));
-        restaurantResponsibleList.add(new RestaurantResponsible("Mihai", "Ulici", "Str. Castanelor, Nr. 20, Cluj-Napoca", "0736244445",
-                new Account("resp2", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(1)));
-        restaurantResponsibleList.add(new RestaurantResponsible("Veronica", "Micle", "Str. Plopilor, Nr. 2, Cluj-Napoca", "0738244445",
-                new Account("resp3", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE)));
+        restaurantResponsibleList.add(new RestaurantResponsible("Lorena", "Iacobescu", "Str. Carnaval, No. 102, Cluj-Napoca", "0742240445",
+                new Account("respo", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(0)));
+        restaurantResponsibleList.add(new RestaurantResponsible("Mihai", "Ulici", "Str. Castanelor, No. 20, Cluj-Napoca", "0736244445",
+                new Account("respo2", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(1)));
+        restaurantResponsibleList.add(new RestaurantResponsible("Veronica", "Micle", "Str. Plopilor, No. 2, Cluj-Napoca", "0738244445",
+                new Account("respo3", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE)));
 
         for (RestaurantResponsible restaurantResponsible : restaurantResponsibleList) {
             restaurantResponsibleRepository.save(restaurantResponsible);
@@ -174,9 +174,9 @@ public class DataPopulator implements InitializingBean {
         menus2.add(menuList.get(2));
 
         List<Restaurant> restaurantList = new ArrayList<>();
-        restaurantList.add(new Restaurant("Floarea Soarelui", "Str. Primaverii, Nr. 12, Cluj-Napoca", menus1));
-        restaurantList.add(new Restaurant("Eating Sunshine", "Str. Verii, Nr. 4, Cluj-Napoca", menus2));
-        restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, Nr. 123, Cluj-Napoca", new HashSet<>()));
+        restaurantList.add(new Restaurant("Sunflower Restaurant", "Str. Primaverii, No. 12, Cluj-Napoca", menus1));
+        restaurantList.add(new Restaurant("Eating Sunshine", "Str. Verii, No. 4, Cluj-Napoca", menus2));
+        restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, No. 123, Cluj-Napoca", new HashSet<>()));
 
         for (Restaurant restaurant : restaurantList) {
             restaurantRepository.save(restaurant);
@@ -199,9 +199,9 @@ public class DataPopulator implements InitializingBean {
         List<Item> itemList2 = randomSubList(itemList, length - 2);
 
         List<Menu> menuList = new ArrayList<>();
-        menuList.add(new Menu("Meniul Zilei", itemList1));
-        menuList.add(new Menu("Meniu de Primavara", itemList2));
-        menuList.add(new Menu("Meniu", itemList));
+        menuList.add(new Menu("Daily Menu", itemList1));
+        menuList.add(new Menu("Spring Menu", itemList2));
+        menuList.add(new Menu("International Menu", itemList));
 
         for (Menu menu : menuList) {
             menuRepository.save(menu);
@@ -219,7 +219,7 @@ public class DataPopulator implements InitializingBean {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item("Pasta Carbonara", "The classical Italian taste", PASTA, 20.5));
         itemList.add(new Item("Tripe Soup", "The classical Romanian taste", CIORBA_BURTA, 14.5));
-        itemList.add(new Item("Wiener Schnitzel", "The classical austrian taste", SCHNITZEL, 18.99));
+        itemList.add(new Item("Wiener Schnitzel", "The classical Austrian taste", SCHNITZEL, 18.99));
 
         for (Item item : itemList) {
             itemRepository.save(item);
