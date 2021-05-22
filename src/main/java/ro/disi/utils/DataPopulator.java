@@ -13,6 +13,8 @@ import ro.disi.repositories.*;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static ro.disi.utils.ItemImages.*;
@@ -45,10 +47,12 @@ public class DataPopulator implements InitializingBean {
     ItemRepository itemRepository;
 
     @Autowired
-    AllergenRepository allergenRepository;
+    WeeklyMenuRepository weeklyMenuRepository;
 
     @Autowired
     DonationRepository donationRepository;
+
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataPopulator.class);
 
@@ -184,6 +188,8 @@ public class DataPopulator implements InitializingBean {
 
         LOGGER.info("Restaurants were added by the populator!");
 
+        insertWeeklyMenus();
+
     }
 
     private void insertMenus() {
@@ -226,6 +232,31 @@ public class DataPopulator implements InitializingBean {
         }
 
         LOGGER.info("Items were added by the populator!");
+    }
+
+    private void insertWeeklyMenus() {
+        if (weeklyMenuRepository.count() > 0) {
+            return;
+        }
+
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        List<Item> itemList = itemRepository.findAll();
+
+        Date start = new Date();
+        Date end;
+        LocalDate today = LocalDate.now();
+        LocalDate next = today.plus(1, ChronoUnit.WEEKS);
+        end = new Date(next.toEpochDay());
+
+        for (Restaurant restaurant: restaurants) {
+            WeeklyMenu weeklyMenu = new WeeklyMenu("Special Weekly Menu", itemList, start, end, 20.0);
+            weeklyMenu.setRestaurant(restaurant);
+            weeklyMenuRepository.save(weeklyMenu);
+            restaurant.getMenus().add(weeklyMenu);
+            restaurantRepository.save(restaurant);
+        }
+
+        LOGGER.info("Weekly menus were inserted!");
     }
 
     private void insertDonations() throws ParseException {

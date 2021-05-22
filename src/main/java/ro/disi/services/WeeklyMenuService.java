@@ -68,7 +68,7 @@ public class WeeklyMenuService {
             LOGGER.error("Restaurant with id {} was not found in db", restaurantId);
             throw new ResourceNotFoundException(Restaurant.class.getSimpleName() + " with id: " + restaurantId);
         }
-        System.out.println(weeklyMenuDTO.getDiscountPercent());
+
         WeeklyMenu weeklyMenu;
         if(weeklyMenuDTO.getId()!=null){
             weeklyMenu = WeeklyMenuBuilder.toEntityWithId(weeklyMenuDTO);
@@ -77,7 +77,7 @@ public class WeeklyMenuService {
         }
         Restaurant restaurant = restaurantOptional.get();
         weeklyMenu.setRestaurant(restaurant);
-        System.out.println(weeklyMenu.getDiscountPercent());
+
         weeklyMenu = weeklyMenuRepository.save(weeklyMenu);
         restaurant.getMenus().add(weeklyMenu);
         restaurantRepository.save(restaurant);
