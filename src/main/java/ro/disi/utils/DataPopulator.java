@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -152,7 +153,7 @@ public class DataPopulator implements InitializingBean {
         restaurantResponsibleList.add(new RestaurantResponsible("Mihai", "Ulici", "Str. Castanelor, No. 20, Cluj-Napoca", "0736244445",
                 new Account("respo2", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(1)));
         restaurantResponsibleList.add(new RestaurantResponsible("Veronica", "Micle", "Str. Plopilor, No. 2, Cluj-Napoca", "0738244445",
-                new Account("respo3", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE)));
+                new Account("respo3", getEncoder().encode("pass"), Role.RESTAURANT_RESPONSIBLE), restaurantList.get(2)));
 
         for (RestaurantResponsible restaurantResponsible : restaurantResponsibleList) {
             restaurantResponsibleRepository.save(restaurantResponsible);
@@ -175,12 +176,14 @@ public class DataPopulator implements InitializingBean {
 
         Set<Menu> menus2 = new HashSet<>();
         menus2.add(menuList.get(1));
-        menus2.add(menuList.get(2));
+
+        Set<Menu> menus3 = new HashSet<>();
+        menus3.add(menuList.get(2));
 
         List<Restaurant> restaurantList = new ArrayList<>();
         restaurantList.add(new Restaurant("Sunflower Restaurant", "Str. Primaverii, No. 12, Cluj-Napoca", menus1));
         restaurantList.add(new Restaurant("Eating Sunshine", "Str. Verii, No. 4, Cluj-Napoca", menus2));
-        restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, No. 123, Cluj-Napoca", new HashSet<>()));
+        restaurantList.add(new Restaurant("Flamingo Cuisine", "Str. Iernii, No. 123, Cluj-Napoca", menus3));
 
         for (Restaurant restaurant : restaurantList) {
             restaurantRepository.save(restaurant);
@@ -246,7 +249,7 @@ public class DataPopulator implements InitializingBean {
         Date end;
         LocalDate today = LocalDate.now();
         LocalDate next = today.plus(1, ChronoUnit.WEEKS);
-        end = new Date(next.toEpochDay());
+        end = Date.from(next.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         for (Restaurant restaurant: restaurants) {
             WeeklyMenu weeklyMenu = new WeeklyMenu("Special Weekly Menu", itemList, start, end, 20.0);
