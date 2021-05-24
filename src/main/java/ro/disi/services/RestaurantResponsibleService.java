@@ -84,13 +84,13 @@ public class RestaurantResponsibleService {
     }
 
     public RestaurantDTO getRestaurant(String username) {
-        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccount_Username(username);
+        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccountUsername(username);
         optionalRestaurantResponsible.orElseThrow(() -> new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + " with username " + username));
         return RestaurantBuilder.toRestaurantDTO(optionalRestaurantResponsible.get().getRestaurant());
     }
 
     public RestaurantDTO setRestaurant(String username, UUID restaurantId) {
-        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccount_Username(username);
+        Optional<RestaurantResponsible> optionalRestaurantResponsible = restaurantResponsibleRepository.findByAccountUsername(username);
         optionalRestaurantResponsible.orElseThrow(() -> new ResourceNotFoundException(RestaurantResponsible.class.getSimpleName() + " with username " + username));
         Optional<Restaurant> foundRestaurant = restaurantRepository.findById(restaurantId);
         foundRestaurant.orElseThrow(() -> new ResourceNotFoundException(Restaurant.class.getSimpleName() + " with id: " + restaurantId));

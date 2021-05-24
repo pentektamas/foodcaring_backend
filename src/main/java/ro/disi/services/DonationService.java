@@ -93,7 +93,7 @@ public class DonationService {
     }
 
     public List<DonationDTO> findDonationsByDisadvantagedPerson(String username) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username + " does not exist"));
         List<Donation> donations = donationRepository.findAllByDisadvantagedPersonListContains(optionalDisadvantagedPerson.get());
         return donations.stream().map(DonationBuilder::toDonationDTO).collect(Collectors.toList());
@@ -107,7 +107,7 @@ public class DonationService {
     }
 
     public DonationDTO cancelDonation(String username, UUID donationId) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         optionalDisadvantagedPerson.orElseThrow(() -> new EntityNotFoundException("The disadvantaged person with username " + username + " does not exist"));
 
         Optional<Donation> optionalDonation = donationRepository.findById(donationId);

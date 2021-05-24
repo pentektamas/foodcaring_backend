@@ -4,15 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ro.disi.dtos.PersonDTO;
 import ro.disi.dtos.builders.PersonBuilder;
-import ro.disi.services.AdminService;
-import ro.disi.services.DisadvantagedPersonService;
-import ro.disi.services.DonorService;
-import ro.disi.services.RestaurantResponsibleService;
+import ro.disi.services.*;
 import ro.disi.utils.Role;
 
 import java.security.Principal;
@@ -27,14 +23,16 @@ public class PersonController {
     private final DonorService donorService;
     private final RestaurantResponsibleService restaurantResponsibleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PersonService personService;
 
     @Autowired
-    public PersonController(AdminService adminService, DisadvantagedPersonService disadvantagedPersonService, DonorService donorService, RestaurantResponsibleService restaurantResponsibleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public PersonController(AdminService adminService, DisadvantagedPersonService disadvantagedPersonService, DonorService donorService, RestaurantResponsibleService restaurantResponsibleService, BCryptPasswordEncoder bCryptPasswordEncoder, PersonService personService) {
         this.adminService = adminService;
         this.disadvantagedPersonService = disadvantagedPersonService;
         this.donorService = donorService;
         this.restaurantResponsibleService = restaurantResponsibleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.personService = personService;
     }
 
     @RequestMapping(value = "/login")
@@ -65,4 +63,9 @@ public class PersonController {
         }
     }
 
+    @GetMapping(value = "/person/{role}/{username}")
+    public ResponseEntity<PersonDTO> getByUsername(@PathVariable("role") String role, @PathVariable("username") String username) {
+        PersonDTO personDTO = personService.findPersonByUsername(username,role);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+    }
 }
