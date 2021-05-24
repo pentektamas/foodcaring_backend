@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ro.disi.entities.DisadvantagedPerson;
+import ro.disi.entities.Person;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public interface DisadvantagedPersonRepository extends JpaRepository<Disadvantag
     @Modifying
     void deleteById(@Param("uuid") UUID uuid);
 
-    Optional<DisadvantagedPerson> findByAccount_Username(String username);
-
+    Optional<DisadvantagedPerson> findByAccountUsername(String username);
+    Optional<Person> findByAccount_Username(String username);
 
 }

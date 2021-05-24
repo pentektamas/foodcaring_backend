@@ -133,13 +133,13 @@ public class DisadvantagedPersonService {
     }
 
     public DisadvantagedPersonDTO findDisadvantagedPersonByUsername(String username) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         optionalDisadvantagedPerson.orElseThrow(() -> new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + " with username " + username));
         return DisadvantagedPersonBuilder.toDisadvantagedPersonDTO(optionalDisadvantagedPerson.get());
     }
 
     public Set<MenuDTO> getWishListByUsername(String username) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         if (!optionalDisadvantagedPerson.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
@@ -150,7 +150,7 @@ public class DisadvantagedPersonService {
     }
 
     public Set<MenuDTO> addWishListForDisadvantagedPersonByUsername(String username, Set<MenuDTO> wishListDTO) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         if (!optionalDisadvantagedPerson.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
@@ -165,7 +165,7 @@ public class DisadvantagedPersonService {
     }
 
     public Set<MenuDTO> appendMenuToWishListForDisadvantagedPersonByUsername(String username, MenuDTO wishListMenuDTO) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         if (!optionalDisadvantagedPerson.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
@@ -179,7 +179,7 @@ public class DisadvantagedPersonService {
     }
 
     public Set<MenuDTO> deleteMenuFromWishListByDisadvantagedPersonUsername(String username, MenuDTO wishListMenuDTO) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         if (!optionalDisadvantagedPerson.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);
@@ -193,7 +193,7 @@ public class DisadvantagedPersonService {
     }
 
     public UUID deleteWishListByDisadvantagedPersonUsername(String username) {
-        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccount_Username(username);
+        Optional<DisadvantagedPerson> optionalDisadvantagedPerson = disadvantagedPersonRepository.findByAccountUsername(username);
         if (!optionalDisadvantagedPerson.isPresent()) {
             LOGGER.error("Disadvantaged person with id {} was not found in db", optionalDisadvantagedPerson);
             throw new ResourceNotFoundException(DisadvantagedPerson.class.getSimpleName() + "with username" + username);

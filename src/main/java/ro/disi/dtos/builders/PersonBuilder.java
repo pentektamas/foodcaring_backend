@@ -23,4 +23,15 @@ public class PersonBuilder {
         Account restaurantResponsibleAccount = new Account(personDTO.getUsername(), personDTO.getPassword(), personDTO.getRole());
         return new RestaurantResponsible(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getLocation(), personDTO.getPhoneNumber(), restaurantResponsibleAccount);
     }
+    public static PersonDTO toPerson(Person person) {
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(person.getId());
+        personDTO.setFirstName(person.getFirstName());
+        personDTO.setLastName(person.getLastName());
+        personDTO.setLocation(person.getLocation());
+        personDTO.setPhoneNumber(person.getPhoneNumber());
+        personDTO.setRole(person.getAccount().getRole());
+        personDTO.setUsername(person.getAccount().getUsername());
+        return personDTO;
+    }
 }
