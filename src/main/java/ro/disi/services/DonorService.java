@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.disi.controllers.handlers.exceptions.model.ResourceNotFoundException;
 import ro.disi.dtos.DonorDTO;
-import ro.disi.dtos.builders.DonationBuilder;
 import ro.disi.dtos.builders.DonorBuilder;
 import ro.disi.entities.Donor;
-import ro.disi.entities.Menu;
 import ro.disi.repositories.AccountRepository;
 import ro.disi.repositories.DonorRepository;
 
