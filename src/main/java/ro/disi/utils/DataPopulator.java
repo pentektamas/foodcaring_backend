@@ -191,7 +191,7 @@ public class DataPopulator implements InitializingBean {
 
         LOGGER.info("Restaurants were added by the populator!");
 
-        insertWeeklyMenus();
+//        insertWeeklyMenus();
 
     }
 
